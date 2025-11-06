@@ -1,20 +1,31 @@
-body {
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #141424;
+  color: #F5F7FA;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: #191C24;
-  color: #F4F5F7;
 }
 
 header {
-  background: #21232b;
+  background: linear-gradient(90deg, #162749 0%, #2963f7 70%, #7327ef 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+  box-shadow: 0 3px 12px 0 rgba(44, 27, 95, 0.12);
 }
 
 .logo {
-  height: 40px;
+  height: 64px;
+  max-height: 80px;
+  width: auto;
 }
 
 nav ul {
@@ -26,49 +37,74 @@ nav ul {
 }
 
 nav a {
-  color: #76ffcc;
+  color: #FFD74B;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 600;
+  font-size: 1.12rem;
+  letter-spacing: 0.02em;
+  transition: color 0.2s, background 0.2s;
+  padding: 6px 12px;
+  border-radius: 5px;
 }
 
 nav a:hover {
-  color: #fff854;
+  background: #FFD74B;
+  color: #24243e;
+}
+
+main {
+  flex-grow: 1;
+  /* Assure that main stretches to fill vertical space between header and footer */
 }
 
 .hero {
   padding: 4rem 2rem;
   text-align: center;
-  background: linear-gradient(135deg, #23283b 60%, #7FFFD4 100%);
-  border-radius: 10px;
-  margin: 2rem auto;
-  max-width: 600px;
+  background: linear-gradient(135deg, #18192e 0%, #2963f7 80%, #7327ef 100%);
+  border-radius: 18px;
+  margin: 2rem auto 1rem auto;
+  max-width: 620px;
+  box-shadow: 0 8px 36px rgba(82, 58, 142, 0.22);
+}
+
+.hero h1 {
+  color: #FFD74B;
+  font-size: 2.75rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: #F5F7FA;
+  font-size: 1.2rem;
+  margin-bottom: 2.6rem;
 }
 
 button {
   margin-top: 1.5rem;
-  background: #76ffcc;
-  color: #191C24;
+  background: linear-gradient(90deg, #2963f7 0%, #7327ef 100%);
+  color: #FFD74B;
   border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 6px;
-  font-size: 1.1rem;
+  padding: 0.85rem 2.4rem;
+  border-radius: 8px;
+  font-size: 1.13rem;
   cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  transition: background 0.2s, color 0.2s;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(44, 27, 95, 0.22);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
 }
 
 button:hover {
-  background: #fff854;
-  color: #191C24;
+  background: #FFD74B;
+  color: #18192e;
+  box-shadow: 0 4px 30px rgba(255, 215, 75, 0.16);
 }
 
 footer {
   text-align: center;
   padding: 2rem;
-  background: #21232b;
-  color: #888;
-  font-size: 0.9rem;
+  background: #18192e;
+  color: #FFD74B;
+  font-size: 0.98rem;
   margin-top: 2rem;
+  border-top: 2px solid #2963f7;
 }
