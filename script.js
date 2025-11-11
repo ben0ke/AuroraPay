@@ -1,5 +1,16 @@
 // AuroraPay main script.js - cleaned up & corrected
 
+// --- Apply Theme from LocalStorage Immediately (before DOMContentLoaded) ---
+(function() {
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+    if (currentTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+})();
+
 // --- DOMContentLoaded: Initialize all components ---
 document.addEventListener('DOMContentLoaded', function() {
     initAllCharts();
@@ -336,10 +347,8 @@ function initDarkModeToggle() {
     if (!darkModeToggle) return;
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
-    if (currentTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        darkModeToggle.checked = true;
-    }
+    darkModeToggle.checked = currentTheme === 'dark';
+
     darkModeToggle.addEventListener('change', function() {
         if (this.checked) {
             document.documentElement.classList.add('dark');
