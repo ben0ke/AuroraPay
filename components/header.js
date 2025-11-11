@@ -1,4 +1,7 @@
 class CustomHeader extends HTMLElement {
+  constructor() {
+    super();
+  }
   connectedCallback() {
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `
@@ -25,9 +28,17 @@ class CustomHeader extends HTMLElement {
           background-clip: text;
           color: transparent;
         }
+        h1::-webkit-background-clip {
+          color: transparent;
+        }
+        h1.fallback {
+          background: none;
+          color: #38bdf8;
+        }
       </style>
-      <h1>AuroraPay - Modern Fintech Fiataloknak</h1>
+      <h1 role="banner">AuroraPay - Modern Fintech Fiataloknak</h1>
     `;
   }
 }
+
 customElements.define('custom-header', CustomHeader);
