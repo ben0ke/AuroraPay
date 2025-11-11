@@ -67,9 +67,17 @@ class CustomFooter extends HTMLElement {
         .social-links a {
           color: #94a3b8;
           transition: color 0.3s;
+          display: flex;
         }
-        .social-links a:hover {
-          color: #38bdf8;
+        .social-links a:hover svg {
+          stroke: #38bdf8;
+        }
+        .social-links svg {
+          width: 24px;
+          height: 24px;
+          stroke: #94a3b8;
+          fill: none;
+          stroke-width: 2px;
         }
         .copyright {
           margin-top: 4rem;
@@ -86,10 +94,18 @@ class CustomFooter extends HTMLElement {
           </div>
           <p class="text-sm text-gray-400">Fiataloknak készült modern fintech megoldás, ami egyszerűvé és érthetővé teszi a pénzügyeket.</p>
           <div class="social-links">
-            <a href="#" aria-label="Facebook"><i data-feather="facebook"></i></a>
-            <a href="#" aria-label="Instagram"><i data-feather="instagram"></i></a>
-            <a href="#" aria-label="Twitter"><i data-feather="twitter"></i></a>
-            <a href="#" aria-label="LinkedIn"><i data-feather="linkedin"></i></a>
+            <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a6 6 0 0 0-6 6v3H5v4h4v8h4v-8h3l1-4h-4V8a2 2 0 0 1 2-2h2z"/></svg>
+            </a>
+            <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.4.36a9.86 9.86 0 0 1-3.13 1.2A4.48 4.48 0 0 0 16.88.28c-2.42 0-4.42 1.92-4.42 4.29s2 4.29 4.42 4.29a4.52 4.52 0 0 0 1.53-.27 10.86 10.86 0 0 1-7.87 2c-.32 0-.62-.02-.93-.07 2.44 1.56 5.35 2.49 8.47 2.49A13.79 13.79 0 0 0 23 3z"/></svg>
+            </a>
+            <a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><line x1="8" y1="11" x2="8" y2="16"/><line x1="8" y1="8" x2="8" y2="8"/><line x1="12" y1="16" x2="12" y2="11"/><path d="M12 14v-1a2 2 0 0 1 4 0v3"/></svg>
+            </a>
           </div>
         </div>
         <div class="footer-links">
