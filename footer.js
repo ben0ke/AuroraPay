@@ -111,10 +111,10 @@ class CustomFooter extends HTMLElement {
         <div class="footer-links">
           <h3>Navigáció</h3>
           <ul>
-            <li><a href="/">Kezdőlap</a></li>
-            <li><a href="/about.html">Rólunk</a></li>
-            <li><a href="/financial-education.html">Pénzügyi oktatás</a></li>
-            <li><a href="/contact.html">Kapcsolat</a></li>
+            <li><a href="index.hmtl">Kezdőlap</a></li>
+            <li><a href="about.html">Rólunk</a></li>
+            <li><a href="financial-education.html">Pénzügyi oktatás</a></li>
+            <li><a href="contact.html">Kapcsolat</a></li>
           </ul>
         </div>
         <div class="footer-links">
@@ -130,8 +130,8 @@ class CustomFooter extends HTMLElement {
           <h3>Kapcsolat</h3>
           <ul>
             <li><a href="mailto:info@aurorapay.hu">info@aurorapay.hu</a></li>
-            <li><a href="tel:+3612345678">+36 1 234 5678</a></li>
-            <li>1061 Budapest, Andrássy út 1.</li>
+            <li><a href="tel:+36705256969">+36 70 525 6969</a></li>
+            <li>2400 Dunaújváros, Táncsics Mihály u. 1/A</li>
           </ul>
         </div>
       </div>
