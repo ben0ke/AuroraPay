@@ -1,0 +1,163 @@
+```html
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapcsolat - AuroraPay</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <custom-header></custom-header>
+    <custom-navbar></custom-navbar>
+    <script src="components/header.js"></script>
+    <script src="components/navbar.js"></script>
+<main class="container mx-auto px-4 py-12">
+        <section class="mb-16 animate-fade-in">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent mb-6">Kapcsolat</h1>
+                <p class="text-xl text-gray-300 mb-8">Kérdésed van? Írj nekünk, és hamarosan válaszolunk!</p>
+            </div>
+        </section>
+
+        <section class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-in-left">
+                    <form id="contactForm" class="space-y-6 bg-gray-800 p-8 rounded-xl shadow-xl">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Név</label>
+                            <input type="text" id="name" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-mail cím</label>
+                            <input type="email" id="email" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Üzenet</label>
+                            <textarea id="message" rows="5" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300"></textarea>
+                        </div>
+                        <button type="submit" id="submitContact" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">
+                            <i data-feather="send"></i>
+                            Üzenet küldése
+                        </button>
+                    </form>
+                </div>
+                <div class="animate-slide-in-right">
+                    <div class="bg-gray-800 p-8 rounded-xl shadow-xl">
+                        <h2 class="text-2xl font-bold mb-6">Elérhetőségeink</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="mail" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">E-mail</h3>
+                                    <p class="text-gray-300">info@aurorapay.hu</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="phone" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Telefon</h3>
+                                    <p class="text-gray-300">+36 1 234 5678</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="map-pin" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Cím</h3>
+                                    <p class="text-gray-300">1061 Budapest, Andrássy út 1.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="clock" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Nyitvatartás</h3>
+                                    <p class="text-gray-300">H-P: 9:00 - 17:00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.346441391136!2d19.051896315627398!3d47.50363767917778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dc4a1a2d5c9d%3A0x8b0c8f5b9e1a2e5!2sAndr%C3%A1ssy%20%C3%BAt%201%2C%201061%20Budapest!5e0!3m2!1shu!2shu!4v1620000000000!5m2!1shu!2shu" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-lg"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+-feather="phone" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Telefon</h3>
+                                    <p class="text-gray-300">+36 1 234 5678</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="map-pin" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Cím</h3>
+                                    <p class="text-gray-300">1061 Budapest, Andrássy út 1.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="clock" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">Nyitvatartás</h3>
+                                    <p class="text-gray-300">H-P: 9:00 - 17:00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.346441391136!2d19.051896315627398!3d47.50363767917778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741dc4a1a2d5c9d%3A0x8b0c8f5b9e1a2e5!2sAndr%C3%A1ssy%20%C3%BAt%201%2C%201061%20Budapest!5e0!3m2!1shu!2shu!4v1620000000000!5m2!1shu!2shu" width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-lg"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<div>
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Név</label>
+                            <input type="text" id="name" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-mail cím</label>
+                            <input type="email" id="email" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Üzenet</label>
+                            <textarea id="message" rows="5" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-300"></textarea>
+                        </div>
+                        <button type="submit" id="submitContact" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-105">
+<i data-feather="send"></i>
+                            Üzenet küldése
+                        </button>
+                    </form>
+                </div>
+                <div class="animate-slide-in-right">
+                    <div class="bg-gray-800 p-8 rounded-xl shadow-xl">
+                        <h2 class="text-2xl font-bold mb-6">Elérhetőségeink</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data-feather="mail" class="text-primary-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium">E-mail</h3>
+                                    <p class="text-gray-300">info@aurorapay.hu</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 mt-1">
+                                    <i data

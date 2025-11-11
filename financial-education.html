@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pénzügyi Oktatás - AuroraPay</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <custom-header></custom-header>
+    <custom-navbar></custom-navbar>
+    <script src="components/header.js"></script>
+    <script src="components/navbar.js"></script>
+<main class="container mx-auto px-4 py-12">
+        <section class="mb-16 animate-fade-in">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent mb-6">Pénzügyi Oktatás</h1>
+                <p class="text-xl text-gray-300 mb-8">Tanuld meg a pénzügyek alapjait interaktív leckékkel és gyakorlati példákkal.</p>
+            </div>
+        </section>
+
+        <section class="mb-16 animate-slide-in-up">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Miért fontos a pénzügyi tudatosság?</h2>
+                    <p class="text-lg text-gray-300 mb-6">A pénzügyi tudatosság nem csak a gazdagoknak való. Mindenki számára alapvető fontosságú, hogy megértse a pénz működését, hogy elkerülje a gyakori hibákat és biztosítsa jövőjét.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">Elkerülheted az adósságcsapdákat</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">Okosabb pénzügyi döntéseket hozhatsz</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">Elindíthatod a vagyonépítést már fiatalon</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-8 animate-pulse">
+                    <img src="http://static.photos/finance/640x360/5" alt="Pénzügyi tudatosság" class="rounded-lg w-full">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 animate-fade-in">
+            <h2 class="text-3xl font-bold mb-12 text-center">Kurzusaink</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center">
+                        <i data-feather="dollar-sign" class="text-white w-16 h-16"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Alapok</h3>
+                        <p class="text-gray-300 mb-4">Tanuld meg a pénzügyek alapfogalmait és hogyan készíts költségvetést.</p>
+                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
+                            Kezdem
+                            <i data-feather="arrow-right" class="ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-r from-secondary-600 to-primary-600 flex items-center justify-center">
+                        <i data-feather="trending-up" class="text-white w-16 h-16"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Befektetés</h3>
+                        <p class="text-gray-300 mb-4">Ismerd meg a befektetések világát és hogyan kezdj el akár kis összeggel is.</p>
+                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
+                            Kezdem
+                            <i data-feather="arrow-right" class="ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="h-48 bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center">
+                        <i data-feather="credit-card" class="text-white w-16 h-16"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-3">Adózás</h3>
+                        <p class="text-gray-300 mb-4">Mindent megtudhatsz a magyar adórendszerről és hogyan optimalizáld az adóidat.</p>
+                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
+                            Kezdem
+                            <i data-feather="arrow-right" class="ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <custom-footer></custom-footer>
+    <script src="components/footer.js"></script>
+<script src="script.js"></script>
+    <script>feather.replace();</script>
+</body>
+</html>

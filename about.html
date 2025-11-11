@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rólunk - AuroraPay</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <custom-header></custom-header>
+    <custom-navbar></custom-navbar>
+    <script src="components/header.js"></script>
+    <script src="components/navbar.js"></script>
+<main class="container mx-auto px-4 py-12">
+        <section class="mb-16 animate-fade-in">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent mb-6">Rólunk</h1>
+                <p class="text-xl text-gray-300 mb-8">Az AuroraPay egy innovatív fintech startup, amelynek célja, hogy a fiatalok számára elérhetővé és érthetővé tegye a pénzügyek világát.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-12">
+                <div class="animate-slide-in-left">
+                    <img src="http://static.photos/technology/1024x576/1" alt="Csapatunk" class="rounded-xl shadow-2xl w-full">
+                </div>
+                <div class="animate-slide-in-right">
+                    <h2 class="text-3xl font-bold mb-6">A mi küldetésünk</h2>
+                    <p class="text-lg text-gray-300 mb-6">2019-ben alapítottuk cégünket azzal a céllal, hogy megváltoztassuk, ahogy a fiatalok a pénzügyekkel kapcsolatban gondolkodnak. Hiszünk abban, hogy a pénzügyi tudatosság nem csak a gazdagoknak való.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">Több mint 50,000 elégedett felhasználó</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">Magyarország első fintech startupja fiataloknak</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <i data-feather="check-circle" class="text-primary-500"></i>
+                            </div>
+                            <p class="text-gray-300">3 éves tapasztalat a pénzügyi oktatásban</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 animate-fade-in">
+            <h2 class="text-3xl font-bold mb-12 text-center">Csapatunk</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                    <img src="http://static.photos/people/200x200/1" alt="Kovács Anna" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold text-center">Kovács Anna</h3>
+                    <p class="text-primary-500 text-center mb-3">CEO & Alapító</p>
+                    <p class="text-gray-300 text-center text-sm">Pénzügyi szakértő, korábban banki vezető</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                    <img src="http://static.photos/people/200x200/2" alt="Nagy Bence" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold text-center">Nagy Bence</h3>
+                    <p class="text-primary-500 text-center mb-3">CTO</p>
+                    <p class="text-gray-300 text-center text-sm">Technológiai vezető, szoftvermérnök</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                    <img src="http://static.photos/people/200x200/3" alt="Tóth Eszter" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold text-center">Tóth Eszter</h3>
+                    <p class="text-primary-500 text-center mb-3">UX Designer</p>
+                    <p class="text-gray-300 text-center text-sm">Felhasználói élmény szakértő</p>
+                </div>
+                <div class="bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
+                    <img src="http://static.photos/people/200x200/4" alt="Varga Dávid" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-xl font-semibold text-center">Varga Dávid</h3>
+                    <p class="text-primary-500 text-center mb-3">Pénzügyi tanácsadó</p>
+                    <p class="text-gray-300 text-center text-sm">Pénzügyi oktató, befektetési szakértő</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <custom-footer></custom-footer>
+    <script src="components/footer.js"></script>
+<script src="script.js"></script>
+    <script>feather.replace();</script>
+</body>
+</html>
