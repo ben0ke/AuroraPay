@@ -33,7 +33,7 @@ class CustomNavbar extends HTMLElement {
           justify-content: space-between;
           align-items: center;
         }
-.logo {
+        .logo {
           display: flex;
           align-items: center;
           gap: 0.5rem;
@@ -116,21 +116,13 @@ class CustomNavbar extends HTMLElement {
             display: block;
           }
         }
-@media (max-width: 768px) {
-          .nav-links {
-            display: none;
-          }
-          .mobile-menu-btn {
-            display: block;
-          }
-        }
       </style>
       <div class="header">
         <h1>AuroraPay - Modern Fintech Fiataloknak</h1>
       </div>
       <nav>
         <a href="index.html" class="logo">
-<img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="AuroraPay Logo">
+          <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="AuroraPay Logo">
           <span class="logo-text">AuroraPay</span>
         </a>
         <button class="mobile-menu-btn" id="menuToggle">
@@ -142,23 +134,28 @@ class CustomNavbar extends HTMLElement {
           <a href="financial-education.html">Oktatás</a>
           <a href="contact.html">Kapcsolat</a>
           <a href="index.html#signup" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-full transition duration-300 block text-center">Regisztráció</a>
-</div>
-<div class="nav-links">
+        </div>
+        <div class="nav-links">
           <a href="index.html" class="active">Kezdőlap</a>
           <a href="about.html">Rólunk</a>
           <a href="financial-education.html">Oktatás</a>
           <a href="contact.html">Kapcsolat</a>
           <a href="index.html#signup" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-full transition duration-300">Regisztráció</a>
-</div>
+        </div>
       </nav>
     `;
 
-    // Initialize mobile menu toggle
+    // Wait for feather icons to be present, then replace them
+    if (window.feather) {
+      window.feather.replace();
+    }
+
+    // Mobile menu toggle
     const menuToggle = this.shadowRoot.getElementById('menuToggle');
     const mobileMenu = this.shadowRoot.getElementById('mobileMenu');
-    
+
     if (menuToggle && mobileMenu) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', (e) => {
         mobileMenu.classList.toggle('active');
         const icon = menuToggle.querySelector('i');
         if (mobileMenu.classList.contains('active')) {
@@ -166,45 +163,25 @@ class CustomNavbar extends HTMLElement {
         } else {
           icon.setAttribute('data-feather', 'menu');
         }
-        feather.replace();
+        if (window.feather) {
+          window.feather.replace();
+        }
+        e.stopPropagation();
       });
 
-      // Close menu when clicking outside
+      // Close menu when clicking outside the navbar
       document.addEventListener('click', (e) => {
-        if (!this.shadowRoot.contains(e.target) && mobileMenu.classList.contains('active')) {
+        // Only act if menu is open and click is outside the custom element
+        if (!this.contains(e.target) && !this.shadowRoot.contains(e.target) && mobileMenu.classList.contains('active')) {
           mobileMenu.classList.remove('active');
           const icon = menuToggle.querySelector('i');
           icon.setAttribute('data-feather', 'menu');
-          feather.replace();
+          if (window.feather) {
+            window.feather.replace();
+          }
         }
       });
     }
-  }
-}
-// Add mobile menu toggle functionality
-    const menuToggle = this.shadowRoot.getElementById('menuToggle');
-    const mobileMenu = this.shadowRoot.getElementById('mobileMenu');
-    
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('active');
-      const icon = menuToggle.querySelector('i');
-      if (mobileMenu.classList.contains('active')) {
-        icon.setAttribute('data-feather', 'x');
-      } else {
-        icon.setAttribute('data-feather', 'menu');
-      }
-      feather.replace();
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!this.shadowRoot.contains(e.target) && mobileMenu.classList.contains('active')) {
-        mobileMenu.classList.remove('active');
-        const icon = menuToggle.querySelector('i');
-        icon.setAttribute('data-feather', 'menu');
-        feather.replace();
-      }
-    });
   }
 }
 
