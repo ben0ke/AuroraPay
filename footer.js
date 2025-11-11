@@ -111,7 +111,7 @@ class CustomFooter extends HTMLElement {
         <div class="footer-links">
           <h3>Navigáció</h3>
           <ul>
-            <li><a href="index.hmtl">Kezdőlap</a></li>
+            <li><a href="index.html">Kezdőlap</a></li>
             <li><a href="about.html">Rólunk</a></li>
             <li><a href="financial-education.html">Pénzügyi oktatás</a></li>
             <li><a href="contact.html">Kapcsolat</a></li>
