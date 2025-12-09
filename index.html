@@ -8,244 +8,169 @@
     <link rel="icon" type="image" href="images/auroralogo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              primary: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                200: '#bae6fd',
-                300: '#7dd3fc',
-                400: '#38bdf8',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                800: '#075985',
-                900: '#0c4a6e',
-              },
-              secondary: {
-                50: '#f5f3ff',
-                100: '#ede9fe',
-                200: '#ddd6fe',
-                300: '#c4b5fd',
-                400: '#a78bfa',
-                500: '#8b5cf6',
-                600: '#7c3aed',
-                700: '#6d28d9',
-                800: '#5b21b6',
-                900: '#4c1d95',
-              }
+              primary: { 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e' },
+              secondary: { 50:'#f5f3ff', 100:'#ede9fe', 200:'#ddd6fe', 300:'#c4b5fd', 400:'#a78bfa', 500:'#8b5cf6', 600:'#7c3aed', 700:'#6d28d9', 800:'#5b21b6', 900:'#4c1d95' }
             }
           }
         }
       }
     </script>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen">
-    <custom-header></custom-header>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
     <custom-navbar></custom-navbar>
-<main class="container mx-auto px-4 py-8">
-        <section class="mb-16">
-            <div class="flex flex-col md:flex-row items-center gap-8">
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        
+        <section class="mb-24 mt-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
-                    <div class="flex items-center gap-4 mb-4">
+                    <div class="flex items-center gap-4 mb-6">
                         <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="AuroraPay Logo" class="h-16">
-                        <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">AuroraPay</h1>
+                        <h1 class="text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">AuroraPay</h1>
                     </div>
-<h2 class="text-2xl md:text-3xl font-semibold mb-6">A pénzügyi szabadság új korszaka</h2>
-                    <p class="text-lg mb-8 text-gray-300">Fiataloknak készült modern fintech megoldás, ami egyszerűvé és érthetővé teszi a pénzügyeket. Kezdd el az utad a pénzügyi tudatosság felé!</p>
-                    <div class="flex gap-4">
-                        <a href="#signup" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-6 rounded-full transition duration-300">Regisztrálok</a>
-                        <a href="#learn" class="border border-primary-500 text-primary-500 hover:bg-primary-900/50 font-bold py-3 px-6 rounded-full transition duration-300">Tanulj többet</a>
+                    <h2 class="text-3xl font-semibold mb-6 leading-tight">A pénzügyi szabadság <br>új korszaka</h2>
+                    <p class="text-lg mb-8 text-gray-300 leading-relaxed">Fiataloknak készült modern fintech megoldás, ami egyszerűvé és érthetővé teszi a pénzügyeket. Kezdd el az utad a pénzügyi tudatosság felé ma!</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#signup" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg shadow-primary-900/50">
+                            Regisztrálok
+                        </a>
+                        <a href="learn.html" class="border border-gray-600 hover:border-primary-500 hover:text-primary-400 text-gray-300 font-bold py-3 px-8 rounded-full transition duration-300">
+                            Hogyan működik?
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center gap-4 text-sm text-gray-400">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-gray-900"></div>
+                            <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-gray-900"></div>
+                            <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-gray-900"></div>
+                        </div>
+                        <p>Már több mint 10.000 fiatal csatlakozott</p>
                     </div>
                 </div>
-                <div class="md:w-1/2 relative">
-                    <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/aurorapay-bg2.png" alt="AuroraPay App" class="rounded-xl shadow-2xl w-full">
-                    <div class="absolute inset-0 bg-gradient-to-r from-gray-900/30 to-gray-900/70 rounded-xl"></div>
-                </div>
-</div>
-        </section>
-
-        <section id="features" class="mb-16">
-            <h2 class="text-3xl font-bold mb-12 text-center">Miért válaszd az AuroraPay-t?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition duration-300">
-                    <div class="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i data-feather="zap" class="text-primary-500"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Gyors és egyszerű</h3>
-                    <p class="text-gray-300">Pillanatok alatt regisztrálhatsz és kezdheted használni az appot, bankkártya nélkül is.</p>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition duration-300">
-                    <div class="w-12 h-12 bg-secondary-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i data-feather="globe" class="text-secondary-500"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Nemzetközi utalások</h3>
-                    <p class="text-gray-300">Küldj pénzt külföldre banki díjak nélkül, valós árfolyamon.</p>
-                </div>
-                <div class="bg-gray-800 p-6 rounded-xl hover:bg-gray-700 transition duration-300">
-                    <div class="w-12 h-12 bg-primary-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i data-feather="bar-chart-2" class="text-primary-500"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Pénzügyi tudatosság</h3>
-                    <p class="text-gray-300">Tanuld meg, hogyan kezeljük okosan a pénzünket interaktív leckékkel.</p>
+                <div class="md:w-1/2 relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                    <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/aurorapay-bg2.png" alt="AuroraPay App" class="relative rounded-xl shadow-2xl w-full border border-gray-800">
                 </div>
             </div>
         </section>
 
-        <section id="stats" class="mb-16 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-8">
-            <h2 class="text-3xl font-bold mb-8 text-center">Pénzügyi tudatosság Magyarországon</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <canvas id="financialLiteracyChart" height="300"></canvas>
+        <section id="stats" class="mb-24 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 md:p-12 border border-gray-700/50">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold mb-4">Miért van erre szükség?</h2>
+                <p class="text-gray-400">A pénzügyi tudatosság hiánya valós probléma.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="relative">
+                    <canvas id="financialLiteracyChart" height="250"></canvas>
                 </div>
                 <div>
-                    <div class="mb-8">
-                        <h3 class="text-xl font-semibold mb-2 flex items-center gap-2">
-                            <i data-feather="alert-circle" class="text-yellow-400"></i>
-                            Figyelemre méltó tények
-                        </h3>
-                        <ul class="space-y-3 text-gray-300">
-                            <li class="flex items-start gap-2">
-                                <i data-feather="chevron-right" class="text-primary-500 mt-1 flex-shrink-0"></i>
-                                <span>A magyar fiatalok csak 32%-a érti alapvető pénzügyi fogalmakat</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-feather="chevron-right" class="text-primary-500 mt-1 flex-shrink-0"></i>
-                                <span>Az egyetemisták 65%-a nem készít költségvetést</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i data-feather="chevron-right" class="text-primary-500 mt-1 flex-shrink-0"></i>
-                                <span>Csak 18% tudja, hogyan működik a kamatos kamat</span>
-                            </li>
-                        </ul>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-feather="alert-triangle" class="text-red-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-1">32%</h3>
+                                <p class="text-gray-400">A fiataloknak csak ekkora része érti az alapfogalmakat.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                             <div class="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center flex-shrink-0">
+                                <i data-feather="pie-chart" class="text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-1">65%</h3>
+                                <p class="text-gray-400">Nem készít költségvetést, így nem tudja, hova tűnik a pénz.</p>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#learn" class="inline-flex items-center text-primary-500 hover:text-primary-400 font-medium">
-                        Tudj meg többet
-                        <i data-feather="arrow-right" class="ml-2"></i>
-                    </a>
+                    <div class="mt-8">
+                        <a href="learn.html" class="inline-flex items-center text-primary-400 hover:text-primary-300 font-medium group">
+                            Változtass ezen a Tudástárral
+                            <i data-feather="arrow-right" class="ml-2 transform group-hover:translate-x-1 transition"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="learn" class="mb-16">
-            <h2 class="text-3xl font-bold mb-8 text-center">Pénzügyi alapok</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <article class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="http://static.photos/finance/640x360/1" alt="Költségvetés" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Hogyan készíts költségvetést?</h3>
-                        <p class="text-gray-300 mb-4">Tanuld meg nyomon követni a kiadásaid és megtakarításaid egyszerű módszerekkel.</p>
-                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
-                            Olvass tovább
-                            <i data-feather="arrow-right" class="ml-2"></i>
-                        </a>
-                    </div>
-                </article>
-                <article class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="http://static.photos/finance/640x360/2" alt="Befektetés" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Befektetés kezdőknek</h3>
-                        <p class="text-gray-300 mb-4">Ismerd meg a befektetések alapjait és hogyan kezdhetsz el akár kis összeggel is.</p>
-                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
-                            Olvass tovább
-                            <i data-feather="arrow-right" class="ml-2"></i>
-                        </a>
-                    </div>
-                </article>
-                <article class="bg-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition duration-300">
-                    <img src="http://static.photos/finance/640x360/3" alt="Adó" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Adózás fiataloknak</h3>
-                        <p class="text-gray-300 mb-4">Minden, amit a diákmunkáról és első fizetésedről tudnod kell adózás szempontjából.</p>
-                        <a href="#" class="text-primary-500 hover:text-primary-400 font-medium flex items-center">
-                            Olvass tovább
-                            <i data-feather="arrow-right" class="ml-2"></i>
-                        </a>
-                    </div>
-                </article>
+        <section id="signup" class="max-w-4xl mx-auto">
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-700 shadow-2xl">
+                <div class="max-w-2xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-2 text-center">Készen állsz a pénzügyi szabadságra?</h2>
+                    <p class="text-xl text-gray-300 mb-8 text-center">Regisztrálj most, és kezdd el az utad!</p>
+                    
+                    <form id="signupForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-mail cím</label>
+                                <div class="relative">
+                                    <i data-feather="mail" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
+                                    <input type="email" id="email" required placeholder="pelda@email.com" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="age" class="block text-sm font-medium text-gray-300 mb-2">Életkor</label>
+                                <div class="relative">
+                                     <i data-feather="calendar" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
+                                     <input type="number" id="age" min="16" max="30" required placeholder="18" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Jelszó</label>
+                            <div class="relative">
+                                <i data-feather="lock" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
+                                <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="submitSignup" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-[1.01] shadow-lg">
+                            <i data-feather="user-plus" class="w-5 h-5"></i>
+                            Regisztrálok az AuroraPay-re
+                        </button>
+                        <p class="text-center text-xs text-gray-500 mt-4">A regisztrációval elfogadod a felhasználási feltételeket.</p>
+                    </form>
+                </div>
             </div>
         </section>
 
-        <section id="signup" class="bg-gray-800 rounded-xl p-8 md:p-12">
-            <div class="max-w-2xl mx-auto">
-                <h2 class="text-3xl font-bold mb-2 text-center">Készen állsz a pénzügyi szabadságra?</h2>
-                <p class="text-xl text-gray-300 mb-8 text-center">Regisztrálj most, és kezdd el az utad a pénzügyi tudatosság felé!</p>
-                <form id="signupForm" class="space-y-6 animate-fade-in">
-<div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-mail cím</label>
-                        <input type="email" id="email" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Jelszó</label>
-                        <input type="password" id="password" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                    </div>
-                    <div>
-                        <label for="age" class="block text-sm font-medium text-gray-300 mb-1">Életkor</label>
-                        <input type="number" id="age" min="16" max="30" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                    </div>
-                    <button type="submit" id="submitSignup" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-[1.02]">
-<i data-feather="user-plus"></i>
-                        Regisztrálok
-                    </button>
-                </form>
-            </div>
-        </section>
     </main>
+    
     <custom-footer></custom-footer>
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
     <script>
         feather.replace();
-        const signupForm = document.getElementById('signupForm');
         
-        if (signupForm) {
-            const currentUser = AuthService.getUser();
-            if (currentUser) {
-                const signupSection = document.getElementById('signup');
-                signupSection.innerHTML = `
-                    <div class="text-center py-12">
-                        <h3 class="text-2xl font-bold text-white mb-4">Már be vagy jelentkezve!</h3>
-                        <p class="text-gray-300 mb-6">Üdvözlünk újra, ${currentUser.email}</p>
-                        <a href="dashboard.html" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full">
-                            Tovább a fiókomhoz
-                        </a>
-                    </div>
-                `;
-            }
-
-            signupForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('submitSignup');
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i data-feather="loader" class="animate-spin"></i> Feldolgozás...';
-                feather.replace();
-                
-                const email = document.getElementById('email').value;
-                const age = document.getElementById('age').value;
-                
-                const userData = {
-                    email: email,
-                    age: age,
-                    joinedAt: new Date().toISOString()
-                };
-                
-                AuthService.login(userData);
-                
-                setTimeout(() => {
-                    alert('Sikeres regisztráció! Üdvözöl az AuroraPay.');
-                    signupForm.reset();
-                    
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i data-feather="user-plus"></i> Regisztrálok';
-                    feather.replace();
-                    
-                    window.location.reload();
-                }, 1000);
+        // Csak a diagram miatt kell ide inline script, a form kezelést a script.js-ből is hívhatnánk, 
+        // de az index.html specifikus dolgok maradhatnak itt.
+        
+        // Chart.js inicializálás
+        const ctx = document.getElementById('financialLiteracyChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Érti az alapokat', 'Nem érti'],
+                    datasets: [{
+                        data: [32, 68],
+                        backgroundColor: ['#0ea5e9', '#1f2937'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#9ca3af' } }
+                    }
+                }
             });
         }
     </script>
