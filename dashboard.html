@@ -21,125 +21,143 @@
         }
       }
     </script>
+    <style>
+        .glass-panel { background: rgba(31, 41, 55, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
     <custom-navbar></custom-navbar>
 
     <main class="container mx-auto px-4 py-8 flex-grow">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-gray-800 pb-6">
             <div>
-                <h1 class="text-3xl font-bold text-white mb-2">Vezérlőpult</h1>
-                <p class="text-gray-400" id="welcomeMsg">Üdvözlünk vissza!</p>
+                <p class="text-gray-400 text-sm mb-1">Vezérlőpult</p>
+                <h1 class="text-3xl font-bold text-white" id="welcomeMsg">Jó reggelt!</h1>
             </div>
             <div class="mt-4 md:mt-0 flex gap-3">
-                <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition">
-                    <i data-feather="settings" class="w-4 h-4"></i> Beállítások
+                <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition border border-gray-700">
+                    <i data-feather="download" class="w-4 h-4"></i> Kivonat letöltése
                 </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 space-y-8">
-                <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-8 shadow-lg relative overflow-hidden text-white transform hover:scale-[1.01] transition duration-300">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl p-8 shadow-2xl relative overflow-hidden text-white transform hover:scale-[1.01] transition duration-300 border border-white/10">
                     <div class="absolute right-0 top-0 h-64 w-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
                     
-                    <div class="flex justify-between items-start mb-12">
+                    <div class="flex justify-between items-start mb-10">
                         <div>
-                            <p class="text-primary-100 text-sm font-medium mb-1">Jelenlegi egyenleg</p>
-                            <h2 class="text-4xl font-bold">271,000 Ft</h2>
+                            <p class="text-primary-100 text-sm font-medium mb-1 opacity-80">Elérhető egyenleg</p>
+                            <h2 class="text-4xl font-bold tracking-tight" id="balanceDisplay">...</h2>
                         </div>
-                        <i data-feather="wifi" class="opacity-70"></i>
+                        <i data-feather="wifi" class="opacity-70 rotate-90"></i>
                     </div>
                     
                     <div class="flex justify-between items-end">
                         <div>
-                            <p class="text-primary-100 text-xs mb-1">Kártyabirtokos</p>
-                            <p class="font-mono font-medium tracking-wide" id="cardHolderName">FELHASZNÁLÓ</p>
+                            <p class="text-primary-100 text-xs mb-1 opacity-70">Kártyabirtokos</p>
+                            <p class="font-mono font-medium tracking-widest uppercase" id="cardHolderName">BETÖLTÉS...</p>
                         </div>
-                        <div>
-                            <p class="text-primary-100 text-xs mb-1">Lejárat</p>
+                        <div class="text-right">
+                            <p class="text-primary-100 text-xs mb-1 opacity-70">Lejárat</p>
                             <p class="font-mono">08/28</p>
                         </div>
-                        <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" class="h-8 opacity-80 filter brightness-200 grayscale" alt="Logo">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button class="bg-gray-800 hover:bg-gray-700 p-4 rounded-xl flex flex-col items-center gap-2 transition group">
-                        <div class="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center group-hover:bg-primary-500/30">
-                            <i data-feather="send" class="text-primary-500 w-5 h-5"></i>
+                    <button class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                        <div class="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center group-hover:bg-primary-500/30 text-primary-400">
+                            <i data-feather="send" class="w-5 h-5"></i>
                         </div>
-                        <span class="text-sm font-medium">Küldés</span>
+                        <span class="text-sm font-medium">Utalás</span>
                     </button>
-                    <button class="bg-gray-800 hover:bg-gray-700 p-4 rounded-xl flex flex-col items-center gap-2 transition group">
-                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center group-hover:bg-green-500/30">
-                            <i data-feather="plus-circle" class="text-green-500 w-5 h-5"></i>
+                    <button class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center group-hover:bg-green-500/30 text-green-400">
+                            <i data-feather="plus" class="w-5 h-5"></i>
                         </div>
                         <span class="text-sm font-medium">Feltöltés</span>
                     </button>
-                    <button class="bg-gray-800 hover:bg-gray-700 p-4 rounded-xl flex flex-col items-center gap-2 transition group">
-                        <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center group-hover:bg-yellow-500/30">
-                            <i data-feather="file-text" class="text-yellow-500 w-5 h-5"></i>
+                    <button class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                        <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center group-hover:bg-yellow-500/30 text-yellow-400">
+                            <i data-feather="file-text" class="w-5 h-5"></i>
                         </div>
-                        <span class="text-sm font-medium">Számlák</span>
+                        <span class="text-sm font-medium">Csekkek</span>
                     </button>
-                    <button class="bg-gray-800 hover:bg-gray-700 p-4 rounded-xl flex flex-col items-center gap-2 transition group">
-                        <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center group-hover:bg-purple-500/30">
-                            <i data-feather="pie-chart" class="text-purple-500 w-5 h-5"></i>
+                    <button class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                        <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center group-hover:bg-purple-500/30 text-purple-400">
+                            <i data-feather="more-horizontal" class="w-5 h-5"></i>
                         </div>
-                        <span class="text-sm font-medium">Elemzés</span>
+                        <span class="text-sm font-medium">Egyéb</span>
                     </button>
                 </div>
             </div>
 
-            <div class="bg-gray-800 rounded-2xl p-6">
-                <h3 class="text-xl font-bold mb-6 flex justify-between items-center">
-                    Utolsó tranzakciók
-                    <a href="#" class="text-sm text-primary-500 hover:text-primary-400">Összes</a>
+            <div class="glass-panel rounded-2xl p-6 h-full flex flex-col justify-center">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                    <i data-feather="info" class="text-primary-500"></i> Számlainformációk
                 </h3>
                 
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 hover:bg-gray-700/50 rounded-lg transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center">
-                                <i data-feather="shopping-bag" class="text-red-400 w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Netflix Előfizetés</p>
-                                <p class="text-xs text-gray-400">Ma, 14:30</p>
-                            </div>
-                        </div>
-                        <span class="text-red-400 font-medium">-4,490 Ft</span>
+                <div class="space-y-6">
+                    <div class="border-b border-gray-700/50 pb-4">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Számlatulajdonos</p>
+                        <p class="font-bold text-white text-lg" id="detailsName">...</p>
                     </div>
 
-                    <div class="flex items-center justify-between p-3 hover:bg-gray-700/50 rounded-lg transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
-                                <i data-feather="arrow-down-left" class="text-green-400 w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">Nemzeti Adó- és Vámhivatal</p>
-                                <p class="text-xs text-gray-400">Tegnap, 09:15</p>
-                            </div>
+                    <div class="border-b border-gray-700/50 pb-4">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Bankszámlaszám (IBAN)</p>
+                        <div class="flex items-center gap-2">
+                            <p class="font-mono text-primary-300 text-lg tracking-wide" id="detailsIBAN">HU42 ...</p>
+                            <button class="text-gray-500 hover:text-white" title="Másolás"><i data-feather="copy" class="w-4 h-4"></i></button>
                         </div>
-                        <span class="text-green-400 font-medium">+3,000 Ft</span>
                     </div>
 
-                    <div class="flex items-center justify-between p-3 hover:bg-gray-700/50 rounded-lg transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                <i data-feather="coffee" class="text-blue-400 w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium">UNIX</p>
-                                <p class="text-xs text-gray-400">Tegnap, 17:38</p>
-                            </div>
-                        </div>
-                        <span class="text-red-400 font-medium">-100,850 Ft</span>
+                    <div class="border-b border-gray-700/50 pb-4">
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">SWIFT / BIC Kód</p>
+                        <p class="font-mono text-white text-lg" id="detailsSWIFT">...</p>
+                    </div>
+
+                    <div>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mb-1">Számlacsomag</p>
+                        <span class="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-600/20 to-yellow-500/20 text-yellow-500 border border-yellow-500/30 px-2 py-1 rounded text-xs font-bold uppercase">
+                            <i data-feather="star" class="w-3 h-3"></i> Aurora Premium
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="glass-panel rounded-2xl p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Tranzakciók és Számlák</h3>
+                <div class="flex gap-2">
+                    <select class="bg-gray-800 border border-gray-700 rounded-lg text-sm px-3 py-2 text-white">
+                        <option>Minden típus</option>
+                        <option>Bevétel</option>
+                        <option>Kiadás</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-gray-400 text-xs uppercase border-b border-gray-700">
+                            <th class="py-3 px-4">Dátum</th>
+                            <th class="py-3 px-4">Partner / Leírás</th>
+                            <th class="py-3 px-4">Kategória</th>
+                            <th class="py-3 px-4">Státusz</th>
+                            <th class="py-3 px-4 text-right">Összeg</th>
+                            <th class="py-3 px-4 text-center">Művelet</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm" id="transactionTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
     <custom-footer></custom-footer>
@@ -147,15 +165,58 @@
     <script>
         feather.replace();
 
-        // ELLENŐRZÉS: Be van-e lépve? Ha nincs, irány az index.
         const user = AuthService.getUser();
         if (!user) {
             window.location.href = 'index.html';
         } else {
-            // Adatok kitöltése
-            const name = user.email.split('@')[0];
-            document.getElementById('welcomeMsg').textContent = `Jó látni újra, ${name}!`;
-            document.getElementById('cardHolderName').textContent = name.toUpperCase();
+            // 1. Üdvözlés és Kártya adatok
+            const fullName = user.name || "Felhasználó";
+            document.getElementById('welcomeMsg').textContent = `Szia, ${fullName.split(' ')[0]}!`;
+            document.getElementById('cardHolderName').textContent = fullName.toUpperCase();
+            
+            // Egyenleg formázása
+            const formattedBalance = new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(user.balance);
+            document.getElementById('balanceDisplay').textContent = formattedBalance;
+
+            // 2. Számlaadatok panel kitöltése
+            document.getElementById('detailsName').textContent = fullName;
+            document.getElementById('detailsIBAN').textContent = user.iban || "Generálás alatt...";
+            document.getElementById('detailsSWIFT').textContent = user.swift || "AUROHUHB";
+
+            // 3. Fake Tranzakciók Generálása
+            const tbody = document.getElementById('transactionTableBody');
+            const transactions = [
+                { date: '2023.10.24.', partner: 'Netflix Inc.', cat: 'Szórakozás', status: 'completed', amount: -4490, type: 'invoice' },
+                { date: '2023.10.23.', partner: 'MOL Nyrt.', cat: 'Üzemanyag', status: 'completed', amount: -24018, type: 'card' },
+                { date: '2023.10.20.', partner: 'Kovács Anna', cat: 'Utalás', status: 'incoming', amount: 25000, type: 'transfer' },
+                { date: '2023.10.18.', partner: 'Spotify AB', cat: 'Szórakozás', status: 'pending', amount: -2190, type: 'invoice' },
+                { date: '2023.10.15.', partner: 'RPLN EV', cat: 'Bevétel', status: 'completed', amount: 675000, type: 'salary' }
+            ];
+
+            transactions.forEach(tx => {
+                const isNegative = tx.amount < 0;
+                const amountClass = isNegative ? 'text-white' : 'text-green-400 font-bold';
+                const statusBadge = tx.status === 'completed' 
+                    ? '<span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs">Teljesítve</span>' 
+                    : (tx.status === 'pending' ? '<span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full text-xs">Függőben</span>' : '<span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-xs">Jóváírva</span>');
+                
+                const row = `
+                    <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition">
+                        <td class="py-4 px-4 text-gray-400">${tx.date}</td>
+                        <td class="py-4 px-4 font-medium text-white">${tx.partner}</td>
+                        <td class="py-4 px-4 text-gray-400">${tx.cat}</td>
+                        <td class="py-4 px-4">${statusBadge}</td>
+                        <td class="py-4 px-4 text-right ${amountClass}">${new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(tx.amount)}</td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="text-gray-500 hover:text-primary-400 transition" title="Számla letöltése">
+                                <i data-feather="download-cloud" class="w-4 h-4 mx-auto"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            feather.replace();
         }
     </script>
 </body>
