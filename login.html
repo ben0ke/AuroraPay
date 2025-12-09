@@ -12,9 +12,7 @@
       tailwind.config = {
         theme: {
           extend: {
-            animation: {
-                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
+            animation: { 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite' },
             colors: {
               primary: { 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e' },
               secondary: { 50:'#f5f3ff', 100:'#ede9fe', 200:'#ddd6fe', 300:'#c4b5fd', 400:'#a78bfa', 500:'#8b5cf6', 600:'#7c3aed', 700:'#6d28d9', 800:'#5b21b6', 900:'#4c1d95' }
@@ -24,55 +22,32 @@
       }
     </script>
     <style>
-        .glass {
-            background: rgba(31, 41, 55, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        .glass { background: rgba(31, 41, 55, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
     <custom-navbar></custom-navbar>
 
     <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">
-        
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-600/20 rounded-full blur-[100px] animate-pulse-slow -z-10"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary-600/20 rounded-full blur-[100px] animate-pulse-slow -z-10" style="animation-delay: 2s;"></div>
 
         <div class="w-full max-w-md glass rounded-2xl shadow-2xl p-8 animate-fade-in" id="loginContainer">
-            
             <div class="text-center mb-8">
                 <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="Logo" class="h-12 mx-auto mb-4 drop-shadow-lg">
-                <h1 class="text-2xl font-bold text-white">Üdvözlünk újra!</h1>
-                <p class="text-gray-400 text-sm mt-2">Jelentkezz be a fiókodba</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <button class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg py-2.5 transition text-sm font-medium text-white group">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                    Google
-                </button>
-                <button class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg py-2.5 transition text-sm font-medium text-white group">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.74.79 0 2.06-.71 3.29-.68 1.09.04 1.94.39 2.62 1.09-2.58 1.48-2.02 5.69 1.04 7.06-.55 1.54-1.15 2.92-2.03 4.76zm-1.48-15.6c.66-1.17 1.05-2.48.58-3.69-1.29.13-2.67.92-3.41 1.92-.61.81-1.05 1.98-.67 3.19 1.35.13 2.76-.66 3.5-1.42z"/>
-                    </svg>
-                    Apple
-                </button>
-            </div>
-
-            <div class="relative flex py-2 items-center mb-6">
-                <div class="flex-grow border-t border-gray-700"></div>
-                <span class="flex-shrink-0 mx-4 text-gray-500 text-xs uppercase">Vagy e-mail címmel</span>
-                <div class="flex-grow border-t border-gray-700"></div>
+                <h1 class="text-2xl font-bold text-white">Fiók létrehozása</h1>
+                <p class="text-gray-400 text-sm mt-2">Add meg az adataidat a belépéshez</p>
             </div>
 
             <form id="signupForm" class="space-y-5">
+                <div>
+                    <label for="fullname" class="block text-sm font-medium text-gray-300 mb-2">Teljes név</label>
+                    <div class="relative group">
+                        <i data-feather="user" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
+                        <input type="text" id="fullname" required placeholder="Pl. Kiss Péter" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
+                    </div>
+                </div>
+
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-mail cím</label>
                     <div class="relative group">
@@ -82,14 +57,6 @@
                 </div>
                 
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Jelszó</label>
-                    <div class="relative group">
-                        <i data-feather="lock" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
-                        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
-                    </div>
-                </div>
-
-                <div>
                     <label for="age" class="block text-sm font-medium text-gray-300 mb-2">Életkor</label>
                     <div class="relative group">
                          <i data-feather="calendar" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
@@ -97,23 +64,26 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between text-sm">
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Jelszó</label>
+                    <div class="relative group">
+                        <i data-feather="lock" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
+                    </div>
+                </div>
+
+                <div class="flex items-center text-sm mb-4">
                     <label class="flex items-center text-gray-400 cursor-pointer select-none">
-                        <input type="checkbox" class="form-checkbox bg-gray-900 border-gray-700 rounded text-primary-500 focus:ring-0 mr-2">
-                        Maradjak belépve
+                        <input type="checkbox" required class="form-checkbox bg-gray-900 border-gray-700 rounded text-primary-500 focus:ring-0 mr-2">
+                        Elfogadom a <a href="#" class="text-primary-400 hover:underline ml-1">Feltételeket</a>
                     </label>
-                    <a href="#" class="text-primary-400 hover:text-primary-300">Elfelejtett jelszó?</a>
                 </div>
 
                 <button type="submit" id="submitSignup" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold py-3.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-primary-900/30 transform hover:-translate-y-0.5">
                     <i data-feather="arrow-right" class="w-5 h-5"></i>
-                    Belépés / Regisztráció
+                    Regisztráció és Belépés
                 </button>
             </form>
-            
-            <p class="text-center text-xs text-gray-500 mt-6">
-                Nincs még fiókod? A fenti űrlap kitöltésével automatikusan regisztrálunk.
-            </p>
         </div>
     </main>
     
