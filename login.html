@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belépés - AuroraPay</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image" href="images/auroralogo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            colors: {
+              primary: { 50:'#f0f9ff', 100:'#e0f2fe', 200:'#bae6fd', 300:'#7dd3fc', 400:'#38bdf8', 500:'#0ea5e9', 600:'#0284c7', 700:'#0369a1', 800:'#075985', 900:'#0c4a6e' },
+              secondary: { 50:'#f5f3ff', 100:'#ede9fe', 200:'#ddd6fe', 300:'#c4b5fd', 400:'#a78bfa', 500:'#8b5cf6', 600:'#7c3aed', 700:'#6d28d9', 800:'#5b21b6', 900:'#4c1d95' }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        .glass {
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+    <custom-navbar></custom-navbar>
+
+    <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">
+        
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-600/20 rounded-full blur-[100px] animate-pulse-slow -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary-600/20 rounded-full blur-[100px] animate-pulse-slow -z-10" style="animation-delay: 2s;"></div>
+
+        <div class="w-full max-w-md glass rounded-2xl shadow-2xl p-8 animate-fade-in" id="loginContainer">
+            
+            <div class="text-center mb-8">
+                <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="Logo" class="h-12 mx-auto mb-4 drop-shadow-lg">
+                <h1 class="text-2xl font-bold text-white">Üdvözlünk újra!</h1>
+                <p class="text-gray-400 text-sm mt-2">Jelentkezz be a fiókodba</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <button class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg py-2.5 transition text-sm font-medium">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                    Google
+                </button>
+                <button class="flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg py-2.5 transition text-sm font-medium">
+                    <img src="https://www.svgrepo.com/show/448234/apple.svg" class="w-5 h-5 invert" alt="Apple">
+                    Apple
+                </button>
+            </div>
+
+            <div class="relative flex py-2 items-center mb-6">
+                <div class="flex-grow border-t border-gray-700"></div>
+                <span class="flex-shrink-0 mx-4 text-gray-500 text-xs uppercase">Vagy e-mail címmel</span>
+                <div class="flex-grow border-t border-gray-700"></div>
+            </div>
+
+            <form id="signupForm" class="space-y-5">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-mail cím</label>
+                    <div class="relative group">
+                        <i data-feather="mail" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
+                        <input type="email" id="email" required placeholder="pelda@email.com" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Jelszó</label>
+                    <div class="relative group">
+                        <i data-feather="lock" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-300 mb-2">Életkor</label>
+                    <div class="relative group">
+                         <i data-feather="calendar" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5 group-focus-within:text-primary-500 transition"></i>
+                         <input type="number" id="age" min="16" max="99" required placeholder="18" class="w-full bg-gray-900/50 border border-gray-700 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition outline-none">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center text-gray-400 cursor-pointer">
+                        <input type="checkbox" class="form-checkbox bg-gray-900 border-gray-700 rounded text-primary-500 focus:ring-0 mr-2">
+                        Maradjak belépve
+                    </label>
+                    <a href="#" class="text-primary-400 hover:text-primary-300">Elfelejtett jelszó?</a>
+                </div>
+
+                <button type="submit" id="submitSignup" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold py-3.5 px-4 rounded-lg transition duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-primary-900/30 transform hover:-translate-y-0.5">
+                    <i data-feather="arrow-right" class="w-5 h-5"></i>
+                    Belépés / Regisztráció
+                </button>
+            </form>
+            
+            <p class="text-center text-xs text-gray-500 mt-6">
+                Nincs még fiókod? A fenti űrlap kitöltésével automatikusan regisztrálunk.
+            </p>
+        </div>
+    </main>
+    
+    <custom-footer></custom-footer>
+    <script src="script.js"></script>
+    <script>feather.replace();</script>
+</body>
+</html>
