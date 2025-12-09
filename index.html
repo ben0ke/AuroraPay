@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuroraPay - Modern Fintech Fiataloknak</title>
+    <title>AuroraPay - A Jövő Pénzügyei</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image" href="images/auroralogo.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,154 +25,68 @@
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
     <custom-navbar></custom-navbar>
 
-    <main class="container mx-auto px-4 py-8 flex-grow">
+    <main class="flex-grow">
         
-        <section class="mb-24 mt-8">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" alt="AuroraPay Logo" class="h-16">
-                        <h1 class="text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">AuroraPay</h1>
-                    </div>
-                    <h2 class="text-3xl font-semibold mb-6 leading-tight">A pénzügyi szabadság <br>új korszaka</h2>
-                    <p class="text-lg mb-8 text-gray-300 leading-relaxed">Fiataloknak készült modern fintech megoldás, ami egyszerűvé és érthetővé teszi a pénzügyeket. Kezdd el az utad a pénzügyi tudatosság felé ma!</p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="login.html" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 shadow-lg shadow-primary-900/50">
-                            Csatlakozz most
-                        </a>
-                        <a href="learn.html" class="border border-gray-600 hover:border-primary-500 hover:text-primary-400 text-gray-300 font-bold py-3 px-8 rounded-full transition duration-300">
-                            Hogyan működik?
-                        </a>
-                    </div>
-                    <div class="mt-8 flex items-center gap-4 text-sm text-gray-400">
-                        <div class="flex -space-x-2">
-                            <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-gray-900"></div>
-                            <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-gray-900"></div>
-                            <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-gray-900"></div>
-                        </div>
-                        <p>Már több mint 10.000 fiatal csatlakozott</p>
-                    </div>
-                </div>
-                <div class="md:w-1/2 relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                    <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/aurorapay-bg2.png" alt="AuroraPay App" class="relative rounded-xl shadow-2xl w-full border border-gray-800">
-                </div>
-            </div>
-        </section>
-
-        <section id="stats" class="mb-24 bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 md:p-12 border border-gray-700/50">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold mb-4">Miért van erre szükség?</h2>
-                <p class="text-gray-400">A pénzügyi tudatosság hiánya valós probléma.</p>
-            </div>
+        <section class="relative pt-20 pb-24 overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900/90 to-gray-900"></div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="relative">
-                    <canvas id="financialLiteracyChart" height="250"></canvas>
-                </div>
-                <div>
-                    <div class="space-y-6">
-                        <div class="flex gap-4 items-start">
-                            <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0">
-                                <i data-feather="alert-triangle" class="text-red-400"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-1">32%</h3>
-                                <p class="text-gray-400">A fiataloknak csak ekkora része érti az alapfogalmakat.</p>
-                            </div>
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-900/30 border border-primary-500/30 text-primary-400 text-sm font-medium mb-6">
+                            <span class="relative flex h-2 w-2">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+                            </span>
+                            Új: Kriptovaluta támogatás érkezett!
                         </div>
-                        <div class="flex gap-4 items-start">
-                             <div class="w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center flex-shrink-0">
-                                <i data-feather="pie-chart" class="text-yellow-400"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-white mb-1">65%</h3>
-                                <p class="text-gray-400">Nem készít költségvetést, így nem tudja, hova tűnik a pénz.</p>
-                            </div>
+                        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+                            Pénzügyek,<br>
+                            <span class="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">ahogy Te akarod.</span>
+                        </h1>
+                        <p class="text-xl text-gray-400 mb-8 leading-relaxed max-w-lg">
+                            Felejtsd el a sorban állást és a rejtett költségeket. Az AuroraPay az első app, ami valóban érti a Z generáció igényeit.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="login.html" class="bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-4 px-8 rounded-full transition duration-300 shadow-lg shadow-primary-900/50 flex items-center gap-2 transform hover:scale-105">
+                                Csatlakozom <i data-feather="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                            <a href="features.html" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-full transition border border-gray-700">
+                                Mit tud az app?
+                            </a>
                         </div>
                     </div>
-                    <div class="mt-8">
-                        <a href="learn.html" class="inline-flex items-center text-primary-400 hover:text-primary-300 font-medium group">
-                            Változtass ezen a Tudástárral
-                            <i data-feather="arrow-right" class="ml-2 transform group-hover:translate-x-1 transition"></i>
-                        </a>
+                    <div class="md:w-1/2 relative">
+                        <div class="relative z-10 transform md:rotate-y-12 md:rotate-x-6 transition-transform duration-500 hover:rotate-0">
+                            <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/aurorapay-bg2.png" alt="App Interface" class="rounded-3xl shadow-2xl border border-gray-700/50 w-full max-w-md mx-auto">
+                        </div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-primary-600/30 to-secondary-600/30 blur-[100px] -z-10"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="signup" class="max-w-4xl mx-auto">
-            <div class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-gray-700 shadow-2xl">
-                <div class="max-w-2xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-2 text-center">Készen állsz a pénzügyi szabadságra?</h2>
-                    <p class="text-xl text-gray-300 mb-8 text-center">Regisztrálj most, és kezdd el az utad!</p>
-                    
-                    <form id="signupForm" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">E-mail cím</label>
-                                <div class="relative">
-                                    <i data-feather="mail" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
-                                    <input type="email" id="email" required placeholder="pelda@email.com" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
-                                </div>
-                            </div>
-                            <div>
-                                <label for="age" class="block text-sm font-medium text-gray-300 mb-2">Életkor</label>
-                                <div class="relative">
-                                     <i data-feather="calendar" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
-                                     <input type="number" id="age" min="16" max="30" required placeholder="18" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Jelszó</label>
-                            <div class="relative">
-                                <i data-feather="lock" class="absolute left-3 top-3.5 text-gray-500 w-5 h-5"></i>
-                                <input type="password" id="password" required placeholder="••••••••" class="w-full bg-gray-900/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition">
-                            </div>
-                        </div>
-                        
-                        <button type="submit" id="submitSignup" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2 transform hover:scale-[1.01] shadow-lg">
-                            <i data-feather="user-plus" class="w-5 h-5"></i>
-                            Regisztrálok az AuroraPay-re
-                        </button>
-                        <p class="text-center text-xs text-gray-500 mt-4">A regisztrációval elfogadod a felhasználási feltételeket.</p>
-                    </form>
+        <section class="py-20 bg-gray-800/50 border-y border-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold mb-4">Miért pont az AuroraPay?</h2>
+                    <p class="text-gray-400">Nézd meg a tényeket, és dönts okosan.</p>
                 </div>
-            </div>
-        </section>
 
-    </main>
-    
-    <custom-footer></custom-footer>
-    <script src="script.js"></script>
-    <script>
-        feather.replace();
-        
-        // Csak a diagram miatt kell ide inline script, a form kezelést a script.js-ből is hívhatnánk, 
-        // de az index.html specifikus dolgok maradhatnak itt.
-        
-        // Chart.js inicializálás
-        const ctx = document.getElementById('financialLiteracyChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Érti az alapokat', 'Nem érti'],
-                    datasets: [{
-                        data: [32, 68],
-                        backgroundColor: ['#0ea5e9', '#1f2937'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { color: '#9ca3af' } }
-                    }
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="p-4 text-gray-400 font-medium">Szolgáltatás</th>
+                                <th class="p-4 text-gray-500 font-medium text-center opacity-50">Hagyományos Bank</th>
+                                <th class="p-4 text-gray-400 font-medium text-center">Más Fintech Appok</th>
+                                <th class="p-4 bg-gray-800/80 text-primary-400 font-bold text-center rounded-t-xl border-t border-x border-primary-500/30">AuroraPay</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm md:text-base">
+                            <tr class="border-b border-gray-700/50 hover:bg-gray-800/30 transition">
+                                <td class="p-4 font-medium">Havi számlavezetési díj</td>
+                                <td class="p-4 text-center text-red-400">500 - 2000 Ft</td>
+                                <td class="p-4 text-center text-gray-300">Ingyenes*</td>
+                                <td class="p-4 bg-gray-800/50 text-center text-green-400 font-bold border-x border-gray-700/50">0 Ft (Mindig)</td>
