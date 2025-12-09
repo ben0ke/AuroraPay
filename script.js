@@ -1,6 +1,6 @@
-/* script.js - A teljes, javított verzió */
+/* script.js - Frissített verzió */
 
-// 1. AUTH SERVICE - Az adatok kezelése
+// 1. AUTH SERVICE (Változatlan)
 const AuthService = {
     login: (userData) => {
         localStorage.setItem('aurorapay_current_user', JSON.stringify(userData));
@@ -12,22 +12,21 @@ const AuthService = {
     },
     logout: () => {
         localStorage.removeItem('aurorapay_current_user');
-        window.location.href = 'index.html'; // Kilépéskor visszavisz a főoldalra
+        window.location.href = 'index.html';
     }
 };
 
-// 2. NAVBAR KOMPONENS
+// 2. NAVBAR (Módosítva: Link a login.html-re)
 class CustomNavbar extends HTMLElement {
     connectedCallback() {
         this.render();
         window.addEventListener('auth-change', () => this.render());
         
-        // Aktív oldal jelzése a menüben
+        // Aktív oldal jelzése
         setTimeout(() => {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             const links = this.querySelectorAll('nav a');
             links.forEach(link => {
-                // Pontos egyezés vagy ha üres (főoldal)
                 const href = link.getAttribute('href');
                 if (href === currentPage || (currentPage === 'index.html' && href.startsWith('index.html'))) {
                     link.classList.add('text-white');
@@ -63,8 +62,8 @@ class CustomNavbar extends HTMLElement {
                                 </button>
                             </div>
                         ` : `
-                            <a href="index.html#signup" class="bg-gray-700 hover:bg-gray-600 text-white px-5 py-2 rounded-full text-sm font-bold transition ml-4">
-                                Belépés
+                            <a href="login.html" class="bg-gray-700 hover:bg-gray-600 text-white px-5 py-2 rounded-full text-sm font-bold transition ml-4 flex items-center gap-2">
+                                <i data-feather="user"></i> Belépés
                             </a>
                         `}
                     </div>
@@ -79,79 +78,64 @@ class CustomNavbar extends HTMLElement {
         if(typeof feather !== 'undefined') feather.replace();
     }
 }
+if (!customElements.get('custom-navbar')) customElements.define('custom-navbar', CustomNavbar);
 
-if (!customElements.get('custom-navbar')) {
-    customElements.define('custom-navbar', CustomNavbar);
-}
-
-// 3. FOOTER KOMPONENS
+// 3. FOOTER (Változatlan)
 class CustomFooter extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <footer class="bg-gray-900 border-t border-gray-800 py-8 mt-auto">
                 <div class="container mx-auto px-4 text-center text-gray-400">
-                    <div class="flex justify-center gap-6 mb-4">
-                        <a href="#" class="hover:text-primary-400"><i data-feather="facebook"></i></a>
-                        <a href="#" class="hover:text-primary-400"><i data-feather="instagram"></i></a>
-                        <a href="#" class="hover:text-primary-400"><i data-feather="twitter"></i></a>
-                    </div>
                     <p>&copy; ${new Date().getFullYear()} AuroraPay. Minden jog fenntartva.</p>
                 </div>
             </footer>
         `;
-        if(typeof feather !== 'undefined') feather.replace();
     }
 }
+if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
 
-if (!customElements.get('custom-footer')) {
-    customElements.define('custom-footer', CustomFooter);
-}
-
-// 4. REGISZTRÁCIÓ KEZELÉSE (Ez hiányzott!)
-// Megvárjuk, amíg az oldal betölt
+// 4. LOGIN OLDAL LOGIKA
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     
-    // Csak akkor fut le, ha megtalálja a formot (tehát az index.html-en vagyunk)
     if (signupForm) {
-        
-        // Ellenőrzés: ha már be van lépve, ne mutassuk a formot
+        // Ha a login.html-en vagyunk
         const currentUser = AuthService.getUser();
+        
         if (currentUser) {
-            const signupSection = document.getElementById('signup');
-            if(signupSection) {
-                signupSection.innerHTML = `
-                    <div class="text-center py-12 bg-gray-800/50 rounded-2xl border border-gray-700">
+            // Ha már be van lépve, cseréljük le az egész űrlap konténert
+            const container = document.getElementById('loginContainer');
+            if(container) {
+                container.innerHTML = `
+                    <div class="text-center py-4">
                         <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i data-feather="check" class="text-green-500 w-8 h-8"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-2">Már be vagy jelentkezve!</h3>
-                        <p class="text-gray-300 mb-6">Fiók: ${currentUser.email}</p>
-                        <a href="dashboard.html" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full transition">
-                            Tovább a Vezérlőpultra
+                        <p class="text-gray-300 mb-6">${currentUser.email}</p>
+                        <a href="dashboard.html" class="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full transition inline-block w-full">
+                            Irány a Vezérlőpult
                         </a>
+                        <button onclick="AuthService.logout()" class="mt-4 text-gray-500 hover:text-white text-sm">
+                            Kijelentkezés és új belépés
+                        </button>
                     </div>
                 `;
                 if(typeof feather !== 'undefined') feather.replace();
             }
         } else {
-            // Ha nincs belépve, figyeljük a gombnyomást
+            // Belépés kezelése
             signupForm.addEventListener('submit', function(e) {
-                e.preventDefault(); // Ne töltődjön újra az oldal hagyományosan
+                e.preventDefault();
                 
                 const submitBtn = document.getElementById('submitSignup');
-                const originalContent = submitBtn.innerHTML;
-                
-                // 1. Loading állapot
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i data-feather="loader" class="animate-spin"></i> Feldolgozás...';
+                submitBtn.innerHTML = '<i data-feather="loader" class="animate-spin"></i> Ellenőrzés...';
                 if(typeof feather !== 'undefined') feather.replace();
                 
-                // 2. Adatok kinyerése
                 const email = document.getElementById('email').value;
                 const age = document.getElementById('age').value;
                 
-                // 3. Mesterséges késleltetés (hogy látszódjon a töltés)
                 setTimeout(() => {
                     const userData = {
                         email: email,
@@ -159,15 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         joinedAt: new Date().toISOString()
                     };
                     
-                    // 4. Mentés
                     AuthService.login(userData);
+                    window.location.href = 'dashboard.html'; // Azonnali átirányítás
                     
-                    alert('Sikeres regisztráció! Üdvözlünk az AuroraPay-en.');
-                    
-                    // 5. Átirányítás a vezérlőpultra
-                    window.location.href = 'dashboard.html';
-                    
-                }, 1500);
+                }, 1000);
             });
         }
     }
