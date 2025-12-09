@@ -23,15 +23,24 @@ const AuthService = {
 class CustomNavbar extends HTMLElement {
     connectedCallback() {
         this.render();
-        // Figyeljük, ha valaki be/kilép, hogy frissüljön a menü
         window.addEventListener('auth-change', () => this.render());
+        
+        // Aktív oldal megjelölése
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const links = this.querySelectorAll('nav a');
+        links.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('text-white');
+                link.classList.remove('text-gray-300');
+            }
+        });
     }
 
     render() {
         const user = AuthService.getUser();
         
         this.innerHTML = `
-            <nav class="bg-gray-800/50 backdrop-blur-md border-b border-gray-700 fixed w-full z-50 top-0">
+            <nav class="bg-gray-800/90 backdrop-blur-md border-b border-gray-700 fixed w-full z-50 top-0 transition-all duration-300">
                 <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                     <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-white">
                         <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" class="h-8" alt="Logo">
@@ -39,30 +48,33 @@ class CustomNavbar extends HTMLElement {
                     </a>
                     
                     <div class="hidden md:flex gap-6 items-center">
-                        <a href="index.html#features" class="text-gray-300 hover:text-white transition">Funkciók</a>
-                        <a href="index.html#learn" class="text-gray-300 hover:text-white transition">Tudástár</a>
+                        <a href="features.html" class="text-gray-300 hover:text-white transition font-medium">Funkciók</a>
+                        <a href="learn.html" class="text-gray-300 hover:text-white transition font-medium">Tudástár</a>
                         
                         ${user ? `
-                            <div class="flex items-center gap-4">
-                                <span class="text-primary-400 text-sm">Szia, ${user.email.split('@')[0]}!</span>
-                                <button onclick="AuthService.logout()" class="text-gray-300 hover:text-red-400 transition flex items-center gap-1">
-                                    <i data-feather="log-out" class="w-4 h-4"></i> Kilépés
-                                </button>
-                                <a href="dashboard.html" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-full text-sm font-bold transition">
+                            <div class="flex items-center gap-4 ml-4">
+                                <span class="text-primary-400 text-sm hidden lg:inline">Szia, ${user.email.split('@')[0]}!</span>
+                                <a href="dashboard.html" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2 rounded-full text-sm font-bold transition shadow-lg shadow-primary-900/20">
                                     Fiókom
                                 </a>
+                                <button onclick="AuthService.logout()" class="text-gray-400 hover:text-red-400 transition" title="Kilépés">
+                                    <i data-feather="log-out" class="w-5 h-5"></i>
+                                </button>
                             </div>
                         ` : `
-                            <a href="index.html#signup" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-full text-sm font-bold transition">
-                                Belépés / Regisztráció
+                            <a href="index.html#signup" class="bg-gray-700 hover:bg-gray-600 text-white px-5 py-2 rounded-full text-sm font-bold transition ml-4">
+                                Belépés
                             </a>
                         `}
                     </div>
+                    
+                    <button class="md:hidden text-gray-300">
+                        <i data-feather="menu"></i>
+                    </button>
                 </div>
             </nav>
-            <div class="h-16"></div> `;
-        
-        // Ikonok újratöltése a beillesztés után
+            <div class="h-20"></div>
+        `;
         if(typeof feather !== 'undefined') feather.replace();
     }
 }
