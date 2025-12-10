@@ -264,3 +264,209 @@ window.addEventListener('load', () => {
         }, 1500);
     }
 });
+
+/* script.js VÉGE - OKOS CHATBOT LOGIKA */
+
+// 1. CHAT NYITÁS / ZÁRÁS
+function toggleChat() {
+    const chat = document.getElementById('chatWindow');
+    chat.classList.toggle('hidden');
+    
+    // Aktuális idő beállítása
+    const now = new Date();
+    const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    const timeEl = document.getElementById('chatTime');
+    if(timeEl) timeEl.innerText = timeString;
+
+    // Ha először nyitjuk meg, köszönjön be az AI
+    if (!chat.classList.contains('hidden') && chat.dataset.started !== 'true') {
+        chat.dataset.started = 'true';
+        setTimeout(() => {
+            addBotMessage("Szia! 👋 Én az Aurora AI vagyok. Miben segíthetek ma?");
+            // Javaslatok
+            setTimeout(() => {
+                addBotMessage("Kérdezhetsz tőlem ilyesmiket:<br>• Mennyibe kerül?<br>• Hogyan működik a kártya?<br>• Biztonságos az app?");
+            }, 800);
+        }, 500);
+    }
+}
+
+// 2. ÜZENET KÜLDÉSE ÉS FOGADÁSA
+document.addEventListener('DOMContentLoaded', () => {
+    const sendBtn = document.getElementById('chatSendBtn');
+    const input = document.getElementById('chatInput');
+
+    if (sendBtn && input) {
+        // Klikk esemény
+        sendBtn.addEventListener('click', () => handleUserMessage());
+
+        // Enter gomb esemény
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserMessage();
+        });
+    }
+});
+
+function handleUserMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    
+    if (text === "") return;
+
+    // 1. Felhasználó üzenetének megjelenítése
+    addUserMessage(text);
+    input.value = ""; // Töröljük a mezőt
+
+    // 2. AI "gondolkodás" szimulálása
+    const chatMessages = document.getElementById('chatMessages');
+    const loadingId = 'loading-' + Date.now();
+    
+    // Töltő animáció (három pötty)
+    chatMessages.innerHTML += `
+        <div id="${loadingId}" class="flex justify-start mb-4 animate-fade-in">
+            <div class="bg-gray-700 text-gray-400 p-3 rounded-2xl rounded-tl-none text-sm flex gap-1 items-center">
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+            </div>
+        </div>
+    `;
+    scrollToBottom();
+
+    // 3. Válasz generálása (késleltetéssel)
+    setTimeout(() => {
+        // Töröljük a töltő animációt
+        const loader = document.getElementById(loadingId);
+        if(loader) loader.remove();
+
+        // Megkeressük a választ az "agyban"
+        const response = getAIResponse(text);
+        addBotMessage(response);
+    }, 1000 + Math.random() * 500); // 1-1.5 mp véletlen késleltetés
+}
+
+// 3. MEGJELENÍTŐ FÜGGVÉNYEK
+function addUserMessage(text) {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML += `
+        <div class="flex justify-end mb-4 animate-fade-in">
+            <div class="bg-primary-600 text-white p-3 rounded-2xl rounded-tr-none text-sm max-w-[80%] shadow-lg">
+                ${text}
+            </div>
+        </div>
+    `;
+    scrollToBottom();
+}
+
+function addBotMessage(text) {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML += `
+        <div class="flex justify-start mb-4 animate-fade-in">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-xs font-bold text-white mr-2 flex-shrink-0 border border-gray-600">AI</div>
+            <div class="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%] shadow-md">
+                ${text}
+            </div>
+        </div>
+    `;
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// 4. AZ AI "AGYA" - TUDÁSBÁZIS (Bővített verzió)
+function getAIResponse(input) {
+    // Kisbetűssé alakítjuk a könnyebb kereséshez
+    const lowerInput = input.toLowerCase();
+    
+    // Adatok lekérése a megszemélyesítéshez
+    const user = AuthService.getUser();
+    const balance = user ? new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(user.balance) : null;
+    const name = user && user.name ? user.name.split(' ')[0] : 'Vendég';
+
+    // --- ÜDVÖZLÉS & SZEMÉLYES ---
+    if (lowerInput.includes('szia') || lowerInput.includes('hello') || lowerInput.includes('helló') || lowerInput.includes('cső') || lowerInput.includes('jónapot')) {
+        return `Szia ${name}! 👋 Örülök, hogy itt vagy. Miben segíthetek a pénzügyeiddel kapcsolatban?`;
+    }
+
+    if (lowerInput.includes('hogy vagy')) {
+        return "Köszönöm, remekül! 🚀 A szervereim hűtése optimális, és készen állok a válaszadásra.";
+    }
+
+    if (lowerInput.includes('kösz')) {
+        return "Nagyon szívesen! 😊 Ha van még kérdésed, csak írj.";
+    }
+
+    // --- FUNKCIÓK & EGYENLEG (Dinamikus!) ---
+    if (lowerInput.includes('egyenleg') || lowerInput.includes('pénzem') || lowerInput.includes('mennyi') && lowerInput.includes('van')) {
+        if (user) {
+            return `A jelenlegi egyenleged: <strong>${balance}</strong>. Ezt a vezérlőpulton is láthatod.`;
+        } else {
+            return "Jelenleg nem vagy bejelentkezve. Lépj be, hogy lássam az egyenlegedet!";
+        }
+    }
+
+    if (lowerInput.includes('számlaszám') || lowerInput.includes('iban')) {
+        if (user && user.iban) {
+            return `A számlaszámod: <br><code class="bg-gray-700 px-2 py-1 rounded text-xs">${user.iban}</code><br>Ezt használhatod utalások fogadására.`;
+        } else {
+            return "A számlaszámodat a Vezérlőpulton, a 'Számlainformációk' dobozban találod belépés után.";
+        }
+    }
+
+    if (lowerInput.includes('utal') || lowerInput.includes('küld') || lowerInput.includes('fizet')) {
+        return "Pénzt küldeni nagyon egyszerű: A Vezérlőpulton kattints az 'Utalás' gombra, add meg a partner nevét vagy számlaszámát, és az összeg azonnal megérkezik!";
+    }
+
+    // --- ÁLTALÁNOS INFÓK ---
+    if (lowerInput.includes('ingyen') || lowerInput.includes('ár') || lowerInput.includes('költség') || lowerInput.includes('díj')) {
+        return "Az AuroraPay alapcsomagja diákoknak <strong>örökre ingyenes</strong>! Nincs havidíj, és az utalások is díjmentesek belföldön.";
+    }
+
+    if (lowerInput.includes('kártya') || lowerInput.includes('mastercard')) {
+        return "Regisztráció után kapsz egy virtuális kártyát (Apple/Google Pay kompatibilis). Ha szeretnél világító Neon fémkártyát, azt a 'Fiókom' menüben rendelheted meg.";
+    }
+
+    if (lowerInput.includes('kripto') || lowerInput.includes('bitcoin') || lowerInput.includes('coin')) {
+        return "Igen! 🚀 Támogatjuk a kriptovalutákat. Bitcoin, Ethereum és további 20 coin érhető el. Válthatsz és tárolhatsz is nálunk.";
+    }
+
+    if (lowerInput.includes('biztonság') || lowerInput.includes('ellop') || lowerInput.includes('csal')) {
+        return "Banki szintű titkosítást (AES-256) használunk. A pénzedet az OBA védi 100.000 euróig, és a kártyádat egy gombnyomással fagyaszthatod az appban.";
+    }
+
+    // --- TECH SUPPORT ---
+    if (lowerInput.includes('jelszó') || lowerInput.includes('elfelejt')) {
+        return "Semmi gond! A bejelentkezési képernyőn kattints az 'Elfelejtett jelszó' linkre, és küldünk egy visszaállító emailt.";
+    }
+
+    if (lowerInput.includes('ügyfélszolgálat') || lowerInput.includes('ember') || lowerInput.includes('hiba') || lowerInput.includes('support')) {
+        return "Írhatsz nekünk a <strong>support@aurorapay.hu</strong> címre, vagy hívhatod a +36 1 123 4567 számot (H-P 8:00-16:00).";
+    }
+
+    // --- BEMUTATÓ SPECIFIKUS & ÉRDEKESSÉGEK ---
+    if (lowerInput.includes('ki vagy') || lowerInput.includes('mi ez')) {
+        return "Én az Aurora AI vagyok. Ez az applikáció pedig azért készült, hogy a Z generáció végre érthetően és egyszerűen kezelhesse a pénzügyeit.";
+    }
+
+    if (lowerInput.includes('alapító') || lowerInput.includes('ceo') || lowerInput.includes('tulaj')) {
+        return "Az AuroraPay-t <strong>Kovács Benjámin</strong> alapította azzal a céllal, hogy forradalmasítsa a fiatalok bankolását.";
+    }
+
+    if (lowerInput.includes('vicc')) {
+        return "Miért szakított a bankár a barátnőjével? <br> Mert elvesztette az érdeklődését (kamatot)! 😂";
+    }
+    
+    if (lowerInput.includes('gazdag')) {
+         if (user && user.balance > 100000) {
+            return "Hát, van " + balance + "-od, szóval egész jól állsz! 😎";
+         } else {
+             return "A pénz nem boldogít... de azért jó, ha van. Gyűjts tovább az AuroraPay-jel!";
+         }
+    }
+
+    // Ha nem érti
+    return "Ezt sajnos még nem értem. 😅 Próbálj kulcsszavakat használni, pl.: 'egyenleg', 'kártya', 'biztonság', 'utalás', 'kripto'.";
+}
