@@ -185,3 +185,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// ÉLŐ ÉRTESÍTÉS SZIMULÁTOR
+function showNotification() {
+    if (document.querySelectorAll('.fake-toast').length > 0) return;
+
+    const messages = [
+        { icon: 'user-plus', text: 'Új felhasználó regisztrált innen: Budapest', color: 'text-blue-400' },
+        { icon: 'dollar-sign', text: 'Kovács Anna 5.000 Ft-ot utalt', color: 'text-green-400' },
+        { icon: 'shield', text: 'Biztonsági ellenőrzés sikeres', color: 'text-purple-400' },
+        { icon: 'trending-up', text: 'A Bitcoin árfolyama 2%-ot emelkedett', color: 'text-yellow-400' }
+    ];
+
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+
+    const toast = document.createElement('div');
+    toast.className = 'fake-toast fixed bottom-4 right-4 bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-50';
+    toast.innerHTML = `
+        <div class="bg-gray-700/50 p-2 rounded-full ${msg.color}">
+            <i data-feather="${msg.icon}" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p class="text-xs text-gray-400">Éppen most</p>
+            <p class="text-sm font-medium">${msg.text}</p>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+    if(typeof feather !== 'undefined') feather.replace();
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-20', 'opacity-0');
+    }, 100);
+
+    setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        setTimeout(() => toast.remove(), 500);
+    }, 4000);
+}
+
+setTimeout(() => {
+    showNotification();
+    setInterval(() => {
+        if(Math.random() > 0.5) showNotification();
+    }, 8000);
+}, 2000);
