@@ -14,7 +14,7 @@ const AuthService = {
         if (!userData.iban) {
             userData.iban = generateIBAN();
             userData.swift = 'AUROHUHB';
-            userData.balance = 142500;
+            userData.balance = 18890420;
         }
         localStorage.setItem('aurorapay_current_user', JSON.stringify(userData));
         window.dispatchEvent(new Event('auth-change'));
