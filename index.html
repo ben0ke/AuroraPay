@@ -342,6 +342,39 @@
                 }
             });
         }
+        
     </script>
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+    <div id="chatWindow" class="hidden w-80 bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 transform scale-95 origin-bottom-right flex flex-col h-96">
+        
+        <div class="bg-gradient-to-r from-primary-600 to-secondary-600 p-4 flex justify-between items-center flex-shrink-0">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <div>
+                    <span class="font-bold text-white block text-sm">Aurora AI</span>
+                    <span class="text-xs text-primary-100">Online</span>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="text-white hover:text-gray-200"><i data-feather="x"></i></button>
+        </div>
+
+        <div class="flex-grow p-4 overflow-y-auto space-y-4 bg-gray-900 custom-scrollbar" id="chatMessages">
+            <div class="text-xs text-center text-gray-500 my-2">Ma, <span id="chatTime"></span></div>
+        </div>
+
+        <div class="p-3 bg-gray-800 border-t border-gray-700 flex gap-2 flex-shrink-0">
+            <input type="text" id="chatInput" placeholder="Kérdezz valamit..." class="w-full bg-gray-900 text-white text-sm rounded-full px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary-500 border border-gray-700">
+            <button id="chatSendBtn" class="bg-primary-600 text-white p-2 rounded-full hover:bg-primary-500 transition shadow-lg flex-shrink-0">
+                <i data-feather="send" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <button onclick="toggleChat()" class="group relative flex items-center justify-center w-14 h-14 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full shadow-lg hover:scale-110 transition duration-300 z-50">
+        <i data-feather="message-circle" class="text-white w-6 h-6"></i>
+        <span class="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full border-2 border-gray-900 animate-bounce"></span>
+    </button>
+        
+</div>
 </body>
 </html>
