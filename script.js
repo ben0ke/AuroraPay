@@ -251,3 +251,16 @@ document.addEventListener('mousemove', (e) => {
     cursorGlow.style.left = e.clientX + 'px';
     cursorGlow.style.top = e.clientY + 'px';
 });
+
+/* Preloader eltüntetése */
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.remove();
+            }, 700);
+        }, 1500);
+    }
+});
