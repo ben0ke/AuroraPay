@@ -230,3 +230,24 @@ setTimeout(() => {
         if(Math.random() > 0.5) showNotification();
     }, 8000);
 }, 2000);
+
+const cursorGlow = document.createElement('div');
+cursorGlow.style.cssText = `
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.15), transparent 70%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0; /* A tartalom mögött */
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
+    mix-blend-mode: screen;
+`;
+document.body.appendChild(cursorGlow);
+
+document.addEventListener('mousemove', (e) => {
+    cursorGlow.style.left = e.clientX + 'px';
+    cursorGlow.style.top = e.clientY + 'px';
+});
