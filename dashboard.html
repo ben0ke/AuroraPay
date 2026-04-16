@@ -20,6 +20,23 @@
           }
         }
       }
+
+        // Ezt a dashboard.html script részébe tedd
+        const generateTransactions = () => {
+        const partners = ['Netflix', 'Steam Store', 'Tesco', 'MOL', 'McDonalds', 'Diákmunka Kft', 'BKK Zrt'];
+        const categories = ['Szórakozás', 'Gaming', 'Élelmiszer', 'Utazás', 'Étkezés', 'Bevétel', 'Közlekedés'];
+    
+        return Array.from({ length: 5 }, (_, i) => {
+        const isIncome = Math.random() > 0.7;
+        return {
+            date: `2024.03.${20 - i}`,
+            partner: partners[Math.floor(Math.random() * partners.length)],
+            cat: categories[Math.floor(Math.random() * categories.length)],
+            status: 'completed',
+            amount: isIncome ? Math.floor(Math.random() * 50000) + 10000 : -(Math.floor(Math.random() * 15000) + 1000),
+                };
+        });
+    };
     </script>
     <style>
         .glass-panel { background: rgba(31, 41, 55, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
