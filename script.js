@@ -470,3 +470,54 @@ function getAIResponse(input) {
     // Ha nem érti
     return "Ezt sajnos még nem értem. 😅 Próbálj kulcsszavakat használni, pl.: 'egyenleg', 'kártya', 'biztonság', 'utalás', 'kripto'.";
 }
+
+// Add ezt a script.js végéhez, vagy frissítsd az AuthService-t
+const AuthService = {
+    // Regisztráció és mentés LocalStorage-ba
+    signup: (name, email, age) => {
+        const user = {
+            name: name,
+            email: email,
+            age: age,
+            balance: 150000, // Kezdő egyenleg a demóhoz
+            iban: "HU42 1177 3000 1234 5678 9012 3456",
+            swift: "AUROHUHB",
+            joined: new Date().toLocaleDateString('hu-HU')
+        };
+        localStorage.setItem('aurora_user', JSON.stringify(user));
+        return true;
+    },
+
+    // Felhasználó lekérése
+    getUser: () => {
+        const user = localStorage.getItem('aurora_user');
+        return user ? JSON.parse(user) : null;
+    },
+
+    // Kijelentkezés
+    logout: () => {
+        localStorage.removeItem('aurora_user');
+        window.location.href = 'index.html';
+    }
+};
+
+// Eseménykezelő a login.html-hez
+if (document.getElementById('signupForm')) {
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('fullname').value;
+        const email = document.getElementById('email').value;
+        const age = document.getElementById('age').value;
+
+        if (AuthService.signup(name, email, age)) {
+            // Animált átmenet szimulálása
+            const btn = document.getElementById('submitSignup');
+            btn.innerHTML = '<i class="animate-spin" data-feather="loader"></i> Belépés...';
+            feather.replace();
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        }
+    });
+}
