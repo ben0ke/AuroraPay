@@ -1,7 +1,29 @@
 /* =========================================================================
-   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Tisztított Verzió)
+   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Firebase Verzió)
    ========================================================================= */
 
+// 1. FIREBASE IMPORTÁLÁSA (Ennek mindig legelöl kell lennie!)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// !!! IDE MÁSOLD A SAJÁT FIREBASE CONFIG ADATAIDAT !!!
+const firebaseConfig = {
+  apiKey: "AIzaSyB-IDE-A-SAJAT-KULCSOD-JON-IDE",
+  authDomain: "aurorapay-xxxxx.firebaseapp.com",
+  projectId: "aurorapay-xxxxx",
+  storageBucket: "aurorapay-xxxxx.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abcdef"
+};
+
+// Firebase Inicializálása
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// 2. SEGÉDFÜGGVÉNYEK
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(amount);
 };
@@ -13,44 +35,71 @@ function generateIBAN() {
     return `HU42 ${bankCode}7-${branch}-${account}`;
 }
 
-const AuthService = {
-    login: function(userData) {
-        if (!userData.iban) {
-            userData.iban = generateIBAN();
-            userData.swift = 'AUROHUHB';
-            userData.balance = 18890420; 
-            userData.transactions = [
-                { date: '2024.03.20', partner: 'Netflix', cat: 'Szórakozás', amount: -4500, status: 'completed' },
-                { date: '2024.03.18', partner: 'Diákmunka Kft', cat: 'Fizetés', amount: 85000, status: 'completed' }
-            ];
-        }
-        localStorage.setItem('aurorapay_current_user', JSON.stringify(userData));
-        window.dispatchEvent(new Event('auth-change'));
+
+// 3. AUTH SERVICE (Adatbázis és Belépés Kezelése)
+window.AuthService = {
+    init: function() {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    localStorage.setItem('aurorapay_current_user', JSON.stringify(docSnap.data()));
+                    window.dispatchEvent(new Event('auth-change'));
+                }
+            } else {
+                localStorage.removeItem('aurorapay_current_user');
+                window.dispatchEvent(new Event('auth-change'));
+            }
+        });
     },
+
     getUser: function() {
         const data = localStorage.getItem('aurorapay_current_user');
         return data ? JSON.parse(data) : null;
     },
+
     logout: function() {
-        localStorage.removeItem('aurorapay_current_user');
-        window.location.href = 'index.html';
+        signOut(auth).then(() => {
+            localStorage.removeItem('aurorapay_current_user');
+            window.location.href = 'index.html';
+        });
     },
-    signup: function(name, email, age) {
-        const user = {
-            name: name,
-            email: email,
-            age: age,
-            balance: 18890420,
-            iban: generateIBAN(),
-            swift: 'AUROHUHB',
-            joined: new Date().toLocaleDateString('hu-HU'),
-            transactions: []
-        };
-        this.login(user);
-        return true;
+
+    signup: async function(name, email, password, age) {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            const userData = {
+                uid: user.uid,
+                name: name,
+                email: email,
+                age: age,
+                balance: 18890420,
+                iban: generateIBAN(),
+                swift: 'AUROHUHB',
+                joined: new Date().toLocaleDateString('hu-HU'),
+                transactions: [
+                    { date: '2024.05.14', partner: 'AuroraPay Bónusz', cat: 'Bevétel', amount: 18890420, status: 'completed' }
+                ]
+            };
+
+            await setDoc(doc(db, "users", user.uid), userData);
+            return true;
+        } catch (error) {
+            console.error("Hiba történt a regisztráció során:", error.message);
+            alert("Hiba: " + error.message);
+            return false;
+        }
     }
 };
 
+// Figyelő elindítása
+window.AuthService.init();
+
+
+// 4. UI KOMPONENSEK (Navigáció és Lábléc)
 class CustomNavbar extends HTMLElement {
     connectedCallback() {
         this.render();
@@ -58,7 +107,7 @@ class CustomNavbar extends HTMLElement {
     }
 
     render() {
-        const user = AuthService.getUser();
+        const user = window.AuthService.getUser();
         let displayName = user ? (user.name ? user.name.split(' ')[0] : user.email.split('@')[0]) : '';
         let rightMenuHtml = user ? `
             <div class="flex items-center gap-4 ml-4 pl-4 border-l border-gray-700">
@@ -69,7 +118,7 @@ class CustomNavbar extends HTMLElement {
                 <a href="dashboard.html" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white p-2 rounded-full transition">
                     <i data-feather="user" class="w-5 h-5"></i>
                 </a>
-                <button onclick="AuthService.logout()" class="text-red-400 hover:text-red-300 transition" title="Kilépés">
+                <button onclick="window.AuthService.logout()" class="text-red-400 hover:text-red-300 transition" title="Kilépés">
                     <i data-feather="log-out" class="w-5 h-5"></i>
                 </button>
             </div>` : `
@@ -95,6 +144,7 @@ class CustomNavbar extends HTMLElement {
 }
 if (!customElements.get('custom-navbar')) customElements.define('custom-navbar', CustomNavbar);
 
+
 class CustomFooter extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `<footer class="bg-gray-900 border-t border-gray-800 py-8 mt-auto"><div class="container mx-auto px-4 text-center text-gray-400 text-sm"><p>&copy; ${new Date().getFullYear()} AuroraPay Zrt. Minden jog fenntartva.</p></div></footer>`;
@@ -102,10 +152,14 @@ class CustomFooter extends HTMLElement {
 }
 if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
 
+
+// 5. OLDAL LOGIKÁK (Űrlap és Dashboard)
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // Regisztrációs űrlap
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
-        if (AuthService.getUser() && !window.location.pathname.includes('dashboard.html')) {
+        if (window.AuthService.getUser() && !window.location.pathname.includes('dashboard.html')) {
             window.location.href = 'dashboard.html';
         }
 
@@ -120,17 +174,27 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const name = document.getElementById('fullname')?.value || 'Felhasználó';
             const email = document.getElementById('email')?.value || '';
+            const password = document.getElementById('password')?.value || ''; // Szükséges a Firebase-hez!
             const age = document.getElementById('age')?.value || '18';
             
-            setTimeout(() => {
-                AuthService.signup(name, email, age);
-                window.location.href = 'dashboard.html';
-            }, 800);
+            // Firebase Regisztráció meghívása
+            window.AuthService.signup(name, email, password, age).then((success) => {
+                if(success) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Ha hiba van (pl. foglalt email), engedjük újra próbálkozni
+                    if(submitBtn) { 
+                        submitBtn.disabled = false; 
+                        submitBtn.innerHTML = 'Újrapróbálkozás'; 
+                    }
+                }
+            });
         });
     }
 
+    // Dashboard Adatbetöltés
     if (window.location.pathname.includes('dashboard.html')) {
-        const user = AuthService.getUser();
+        const user = window.AuthService.getUser();
         if (!user) { window.location.href = 'login.html'; return; }
 
         const els = {
@@ -166,6 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Preloader eltüntetése
 window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
     if (preloader) {
