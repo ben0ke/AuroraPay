@@ -1,12 +1,12 @@
 /* =========================================================================
-   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Teljes, Strukturált, Nem Minifikált)
+   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Hiánytalan, Javított Verzió)
    ========================================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Konfigurációs objektum
+// Konfigurációs objektum az éles adatokkal
 const firebaseConfig = {
     apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
     authDomain: "ben0ke-aurorapay.firebaseapp.com",
@@ -38,7 +38,7 @@ function generateIBAN() {
     return `HU42 ${bankCode}7-${branch}-${account}`;
 }
 
-// Véletlenszerű múltbéli előzménygenerátor
+// Véletlenszerű múltbéli előzménygenerátor regisztrációhoz
 function generateInitialHistory(startBalance) {
     const partners = ['Netflix', 'Steam Store', 'Tesco', 'MOL Nyrt.', 'McDonalds', 'Diákmunka Kft', 'BKK Zrt', 'Spotify AB', 'RPLN EV'];
     const categories = ['Szórakozás', 'Gaming', 'Élelmiszer', 'Üzemanyag', 'Étkezés', 'Bevétel', 'Közlekedés', 'Szórakozás', 'Bevétel'];
@@ -70,7 +70,7 @@ function generateInitialHistory(startBalance) {
     return history;
 }
 
-// CORE METÓDUSOK ÉS KLIENS INTERFÉSZ
+// KÖZPONTI SZOLGÁLTATÁSOK (Auth & Üzleti logika)
 window.AuthService = {
     init: function () {
         onAuthStateChanged(auth, async (user) => {
@@ -257,7 +257,66 @@ window.AuthService = {
 
 window.AuthService.init();
 
-// INTERAKTÍV DOM RENDER MOTOR
+// JAVÍTÁS: A HEADER ÉS FOOTER SAJÁT BELSŐ HTML TARTALMÁNAK HELYREÁLLÍTÁSA
+class CustomNavbar extends HTMLElement {
+    connectedCallback() {
+        this.render();
+        window.addEventListener('auth-change', () => this.render());
+    }
+
+    render() {
+        const user = window.AuthService.getUser();
+        let displayName = user ? (user.name ? user.name.split(' ')[0] : user.email.split('@')[0]) : '';
+
+        let rightMenuHtml = user ? `
+            <div class="flex items-center gap-4 ml-4 pl-4 border-l border-gray-700">
+                <div class="text-right hidden lg:block">
+                    <span class="block text-white text-sm font-bold leading-tight">${displayName}</span>
+                    <span class="block text-gray-500 text-xs">Prémium fiók</span>
+                </div>
+                <a href="dashboard.html" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white p-2 rounded-full transition">
+                    <i data-feather="user" class="w-5 h-5"></i>
+                </a>
+                <button onclick="window.AuthService.logout()" class="text-red-400 hover:text-red-300 transition" title="Kilépés">
+                    <i data-feather="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>` : `
+            <a href="login.html" class="bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white px-5 py-2 rounded-full text-sm font-bold shadow-lg shadow-primary-900/20 transition">
+                Belépés
+            </a>`;
+
+        this.innerHTML = `
+            <nav class="bg-gray-900/90 backdrop-blur-md border-b border-gray-800 fixed w-full z-50 top-0">
+                <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                    <a href="index.html" class="flex items-center gap-2 font-bold text-xl text-white">
+                        <img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" class="h-8" alt="Logo"> AuroraPay
+                    </a>
+                    <div class="hidden md:flex gap-6 items-center">
+                        <a href="features.html" class="text-gray-300 hover:text-white transition font-medium">Funkciók</a>
+                        <a href="learn.html" class="text-gray-300 hover:text-white transition font-medium">Tudástár</a>
+                        ${rightMenuHtml}
+                    </div>
+                </div>
+            </nav>`;
+
+        if (typeof feather !== 'undefined') feather.replace();
+    }
+}
+if (!customElements.get('custom-navbar')) customElements.define('custom-navbar', CustomNavbar);
+
+class CustomFooter extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+            <footer class="bg-gray-900 border-t border-gray-800 py-8 mt-auto">
+                <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+                    <p>&copy; ${new Date().getFullYear()} AuroraPay Zrt. Minden jog fenntartva.</p>
+                </div>
+            </footer>`;
+    }
+}
+if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
+
+// INITIALIZATIONS & INTERFACES
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
@@ -298,7 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.getElementById('detailsName')) document.getElementById('detailsName').innerText = user.name;
             if (document.getElementById('detailsIBAN')) document.getElementById('detailsIBAN').innerText = user.iban || "Generálás alatt...";
 
-            // Jelvények kirajzolása
             const badgesDiv = document.getElementById('badgesContainer');
             if (badgesDiv && user.badges) {
                 badgesDiv.innerHTML = user.badges.map(b => `
@@ -307,7 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`).join('');
             }
 
-            // Zsebek kezelése pipával
             const vaultsDiv = document.getElementById('vaultsContainer');
             if (vaultsDiv && user.vaults) {
                 vaultsDiv.innerHTML = user.vaults.map(v => {
@@ -333,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).join('');
             }
 
-            // Táblázat
             const tbody = document.getElementById('transactionTableBody');
             if (tbody && user.transactions) {
                 tbody.innerHTML = user.transactions.map(tx => {
