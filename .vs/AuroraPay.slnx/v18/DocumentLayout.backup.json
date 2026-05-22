@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\firebase-debug.log||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:firebase-debug.log||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:script.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
@@ -35,32 +31,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "firebase-debug.log",
-              "DocumentMoniker": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\firebase-debug.log",
-              "RelativeDocumentMoniker": "firebase-debug.log",
-              "ToolTip": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\firebase-debug.log",
-              "RelativeToolTip": "firebase-debug.log",
-              "ViewState": "AgIAAFcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-05-22T07:21:16.341Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "script.js",
               "DocumentMoniker": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\script.js",
               "RelativeDocumentMoniker": "script.js",
               "ToolTip": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\script.js",
               "RelativeToolTip": "script.js",
-              "ViewState": "AgIAANEBAAAAAAAAAAAiwOkBAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAHEBAAAAAAAAAAAqwIYBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-05-22T07:13:32.563Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "qrcode.js",
               "DocumentMoniker": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\qrcode.js",
               "RelativeDocumentMoniker": "qrcode.js",
@@ -72,7 +55,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "dashboard.html",
               "DocumentMoniker": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\dashboard.html",
               "RelativeDocumentMoniker": "dashboard.html",
@@ -84,7 +67,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "login.html",
               "DocumentMoniker": "C:\\Users\\RPLN Tervez\u0151iroda\\Documents\\GitHub\\AuroraPay\\login.html",
               "RelativeDocumentMoniker": "login.html",

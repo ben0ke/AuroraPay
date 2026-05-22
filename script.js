@@ -379,6 +379,17 @@ document.addEventListener('DOMContentLoaded', () => {
     input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 });
 
+// A BETÖLTŐKÉPERNYŐ ELTÜNTETÉSE (PRELOADER)
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.remove(), 700);
+        }, 800);
+    }
+});
+
 // Értesítő rendszer
 function showNotification(text) {
     const toast = document.createElement('div');
