@@ -2,29 +2,22 @@
    AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Realtime Database Verzió)
    ========================================================================= */
 
-// Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+// 1. FIREBASE INTERFÉSZ IMPORTÁLÁSA (Realtime Database SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
- const firebaseConfig = {
-    apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
-    authDomain: "ben0ke-aurorapay.firebaseapp.com",
-    databaseURL: "https://ben0ke-aurorapay-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "ben0ke-aurorapay",
-    storageBucket: "ben0ke-aurorapay.firebasestorage.app",
-    messagingSenderId: "912422844408",
-    appId: "1:912422844408:web:c773ffbfea970e128a880d",
-    measurementId: "G-H49296GLP7"
-  };
-
-
-// Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
+  authDomain: "ben0ke-aurorapay.firebaseapp.com",
+  databaseURL: "https://ben0ke-aurorapay-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "ben0ke-aurorapay",
+  storageBucket: "ben0ke-aurorapay.firebasestorage.app",
+  messagingSenderId: "912422844408",
+  appId: "1:912422844408:web:c773ffbfea970e128a880d",
+  measurementId: "G-H49296GLP7"
+};
 
 // Rendszer inicializálása
 const app = initializeApp(firebaseConfig);
