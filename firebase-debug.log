@@ -1,0 +1,124 @@
+[debug] [2026-05-22T07:53:45.628Z] ----------------------------------------------------------------------
+[debug] [2026-05-22T07:53:45.630Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\RPLN Tervezőiroda\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only hosting
+[debug] [2026-05-22T07:53:45.631Z] CLI Version:   15.18.0
+[debug] [2026-05-22T07:53:45.631Z] Platform:      win32
+[debug] [2026-05-22T07:53:45.631Z] Node Version:  v24.16.0
+[debug] [2026-05-22T07:53:45.631Z] Time:          Fri May 22 2026 09:53:45 GMT+0200 (közép-európai nyári idő)
+[debug] [2026-05-22T07:53:45.631Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-22T07:53:46.845Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-22T07:53:46.846Z] > authorizing via signed-in user (oldbonni2000@gmail.com)
+[debug] [2026-05-22T07:53:46.846Z] [iam] checking project ben0ke-aurorapay for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-05-22T07:53:46.847Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:46.847Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:46.848Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ben0ke-aurorapay:testIamPermissions [none]
+[debug] [2026-05-22T07:53:46.848Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ben0ke-aurorapay:testIamPermissions  x-goog-user-project=ben0ke-aurorapay
+[debug] [2026-05-22T07:53:46.848Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ben0ke-aurorapay:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-05-22T07:53:47.661Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ben0ke-aurorapay:testIamPermissions 200
+[debug] [2026-05-22T07:53:47.661Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ben0ke-aurorapay:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-05-22T07:53:47.661Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:47.661Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:47.662Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ben0ke-aurorapay [none]
+[debug] [2026-05-22T07:53:48.124Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ben0ke-aurorapay 200
+[debug] [2026-05-22T07:53:48.124Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ben0ke-aurorapay {"projectId":"ben0ke-aurorapay","projectNumber":"912422844408","displayName":"AuroraPay","name":"projects/ben0ke-aurorapay","resources":{"hostingSite":"ben0ke-aurorapay","realtimeDatabaseInstance":"ben0ke-aurorapay-default-rtdb"},"state":"ACTIVE","etag":"1_fb6f2405-29cf-4dc4-9584-4b4d083d697d"}
+[info] 
+[info] === Deploying to 'ben0ke-aurorapay'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-05-22T07:53:48.126Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:48.126Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:48.126Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/ben0ke-aurorapay/sites/ben0ke-aurorapay [none]
+[debug] [2026-05-22T07:53:49.262Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/ben0ke-aurorapay/sites/ben0ke-aurorapay 200
+[debug] [2026-05-22T07:53:49.262Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/ben0ke-aurorapay/sites/ben0ke-aurorapay {"name":"projects/ben0ke-aurorapay/sites/ben0ke-aurorapay","defaultUrl":"https://ben0ke-aurorapay.web.app","appId":"1:912422844408:web:c773ffbfea970e128a880d","type":"DEFAULT_SITE"}
+[debug] [2026-05-22T07:53:49.264Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:49.264Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:49.264Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions [none]
+[debug] [2026-05-22T07:53:49.264Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-05-22T07:53:51.166Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions 200
+[debug] [2026-05-22T07:53:51.166Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions {"name":"projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[ben0ke-aurorapay]: beginning deploy... 
+[info] i  hosting[ben0ke-aurorapay]: found 38 files in . 
+[debug] [2026-05-22T07:53:51.182Z] [hosting] uploading with 200 concurrency
+[debug] [2026-05-22T07:53:51.202Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:51.202Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:51.202Z] [hosting] hash cache [] stored for 38 files
+[debug] [2026-05-22T07:53:51.203Z] [hosting][hash queue][FINAL] {"max":15,"min":0,"avg":1.736842105263158,"active":0,"complete":38,"success":38,"errored":0,"retried":0,"total":38,"elapsed":20}
+[debug] [2026-05-22T07:53:51.203Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9:populateFiles [none]
+[debug] [2026-05-22T07:53:51.203Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9:populateFiles {"files":{"/style.css":"acd0e21d7d4d44c851500630978cac87d742dcc54b28a7e353a298d3ba9e5dd2","/README.md":"f13c72b6b37b59ff6b2e1bd00acfbcb211108a5de004c2a9ed071ce3ac6fd73b","/qrcode.js":"46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e","/pfp.jpg":"115af103abc2cf6a86ac14fb271a7545c7722e13cece385bdeabd2c749e83cb7","/navbar.js":"8df4ce3f4d29da80af2f50a8c5cf6f653ed4c1b8ac3133dddd7794c337335838","/login.html":"25780a0b4957145cd6826c82541dc309131b06dec525f0ebe1f9f005630edd25","/learn.html":"522943f4549a9a1994c41ee3ffd152d7cac97dd1037a2adf3a5ee92e453b6a4e","/learn-student-work.html":"693ada4657400ee0cac86eda240c49dbea8b90850d6c5972983e721a98ab46a0","/learn-investment.html":"1449c9b8aeb57e8aeb217ae1665534dc528a9b03423a21f599f20591f60dc2f7","/learn-beginners.html":"1f60d523c3f60ba1144a9661adf08c3856f380a8c0fc32a2431d73b751601dea","/index.html":"335a32573a517f0ff94633ee3b8715db80072af90c0f6e7deb45a9bff0bb5db1","/header.js":"85a30647ab6930bd744bf968f16e219c164b7769a74bf7505f0a7de60c187f8e","/footer.js":"89252c73468079a1c8080f9184afdda04721cb8cd28e76aae3f24efa5444f557","/financial-education.html":"ebd7108a53be4d4daf67449ae32f04dc6307eb0532f8508381acbc8fe0ee38a7","/features.html":"d06802df58992f0bf2f597dc7134f470c34db6168705a1f858b0688b954fa017","/contact.html":"41d557b507a622bcf7142ace4a4620a3201bd8e4721ee59d914c5cce71e6337e","/about.html":"c65b1351ca5273a5e63a470fdaf773cad8ae61efb3bedf40aa0c099e8364237a","/images/aurorapay-bg2.png":"1f1f680edfafc2022269581d298c3f23a1f06c26ba0d89fa5836cc42484fb620","/images/auroralogo.png":"0341137c2686b81c215786b0ef8c74d8be3129fcc1f0edccd07732f962148c9b","/components/navbar.js":"8df4ce3f4d29da80af2f50a8c5cf6f653ed4c1b8ac3133dddd7794c337335838","/components/header.js":"85a30647ab6930bd744bf968f16e219c164b7769a74bf7505f0a7de60c187f8e","/components/footer.js":"d2dfbf8522b81ce72c51dd53c79fcbb5a1ed3c5ec9873ea5e156b9d59c50bbf7","/.vs/AuroraPay.slnx/FileContentIndex/ba92e1d5-fcd4-431a-890b-d00309c3b981.vsidx":"d745309902199fd43ec98be56fd3675b0263bc926772aaedbc5b920f6377929d","/.vs/AuroraPay.slnx/FileContentIndex/b5eeb164-384d-47a2-a304-f022f7f80648.vsidx":"f4ef266dcc8818b81759b551f539f328ff11e6ea6f1eafe29d8a85a443da2859","/.vs/AuroraPay.slnx/FileContentIndex/78be0107-cab9-46a5-b789-55b5fd94eb2a.vsidx":"cd0eb242d6107f2f11e3f638eddfd870db22b877d7ddd5944086c15afacbc49e","/.vs/AuroraPay.slnx/config/applicationhost.config":"458d7179f9d3d28d0c45842f5b6eba29a6b20a2b6211122f2a674a953668d708","/.vs/AuroraPay/CopilotIndices/18.6.39577.51406/SemanticSymbols.db":"38709fcce5c84ddc806fee99219dc3ac7b65a15046741b2138eabbed52aa81f1","/.vs/AuroraPay/CopilotIndices/18.6.39577.51406/CodeChunks.db":"c8cdae88eeebdc50b9cfe065965bf2ef6cb7ffa789676e139b11e00c299f919f","/.vs/ProjectSettings.json":"3034af12bdaf310e533a2f5c8b8563eb58dc37c5868b9178d43dc9f198a9300f","/script.js":"6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e","/.vs/AuroraPay.slnx/v18/DocumentLayout.json":"0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb","/dashboard.html":"5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d","/.vs/VSWorkspaceState.json":"70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133","/.vs/AuroraPay.slnx/v18/DocumentLayout.backup.json":"613221a60d5468898960120a6d057e006cb73eb0a3a632430d0c47889268c0bd","/.vs/slnx.sqlite":"2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9","/.vs/AuroraPay.slnx/v18/.wsuo":"c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c","/.vs/AuroraPay.slnx/FileContentIndex/daebe297-59b4-4665-955e-eb8168a67736.vsidx":"30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda","/.vs/AuroraPay.slnx/FileContentIndex/506dcb9d-bfa9-4d36-905b-dbf564a32a1e.vsidx":"328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe"}}
+[debug] [2026-05-22T07:53:52.421Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9:populateFiles 200
+[debug] [2026-05-22T07:53:52.421Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9:populateFiles {"uploadRequiredHashes":["6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e","c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c","30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda","2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9","5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d","328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe","0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb","70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files"}
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.422Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:52.423Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e [none]
+[debug] [2026-05-22T07:53:52.423Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e [stream]
+[debug] [2026-05-22T07:53:52.424Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c [none]
+[debug] [2026-05-22T07:53:52.424Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c [stream]
+[debug] [2026-05-22T07:53:52.425Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda [none]
+[debug] [2026-05-22T07:53:52.425Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda [stream]
+[debug] [2026-05-22T07:53:52.426Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9 [none]
+[debug] [2026-05-22T07:53:52.426Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9 [stream]
+[debug] [2026-05-22T07:53:52.426Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d [none]
+[debug] [2026-05-22T07:53:52.427Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d [stream]
+[debug] [2026-05-22T07:53:52.427Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe [none]
+[debug] [2026-05-22T07:53:52.427Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe [stream]
+[debug] [2026-05-22T07:53:52.428Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb [none]
+[debug] [2026-05-22T07:53:52.428Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb [stream]
+[debug] [2026-05-22T07:53:52.429Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133 [none]
+[debug] [2026-05-22T07:53:52.429Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133 [stream]
+[debug] [2026-05-22T07:53:52.429Z] [hosting][populate queue][FINAL] {"max":1221,"min":1221,"avg":1221,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1227}
+[debug] [2026-05-22T07:53:52.429Z] [hosting] uploads queued: 8
+[debug] [2026-05-22T07:53:53.236Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133 200
+[debug] [2026-05-22T07:53:53.236Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/70876241698d2e18b2e0ab341531d28262003dd447bead83fa01318d816c2133 [stream]
+[debug] [2026-05-22T07:53:53.286Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c 200
+[debug] [2026-05-22T07:53:53.286Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/c5f2e794a9af568786f2cd2ea48dbe3659e1d65653a58b838ea3f7fe37ea192c [stream]
+[debug] [2026-05-22T07:53:53.291Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda 200
+[debug] [2026-05-22T07:53:53.291Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/30a7f66f54305be8ac98bd09c5dee2640f3729ceec0d0dce1f2ad33e2ddb9fda [stream]
+[debug] [2026-05-22T07:53:53.295Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e 200
+[debug] [2026-05-22T07:53:53.295Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/6d750e90a588c386e91f9df7dae913dcb0766016e14c025acc8ea3868a38d65e [stream]
+[debug] [2026-05-22T07:53:53.354Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb 200
+[debug] [2026-05-22T07:53:53.354Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/0d31b851dfad22123a3938c27afcd6c84633aba1fd8f205c741af77b5ce515fb [stream]
+[debug] [2026-05-22T07:53:53.355Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9 200
+[debug] [2026-05-22T07:53:53.355Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/2b9f1dd4c13d1e9a09106664b246844365de43fe560fc313ff5c72a759270fb9 [stream]
+[debug] [2026-05-22T07:53:53.367Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d 200
+[debug] [2026-05-22T07:53:53.367Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/5d6d9fe025b14450199a44bddb03a065d186397660b2b6be6acbf59b5acabe8d [stream]
+[debug] [2026-05-22T07:53:53.533Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe 200
+[debug] [2026-05-22T07:53:53.533Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9/files/328decb527b17885ffce4f1347d1deb232f92bb5ccee8b3d6cf0f1f1357bbcbe [stream]
+[debug] [2026-05-22T07:53:53.533Z] [hosting][upload queue][FINAL] {"max":1110,"min":813,"avg":917.375,"active":0,"complete":8,"success":8,"errored":0,"retried":0,"total":8,"elapsed":1112}
+[info] +  hosting[ben0ke-aurorapay]: file upload complete 
+[debug] [2026-05-22T07:53:53.533Z] [hosting] deploy completed after 2365ms
+[debug] [2026-05-22T07:53:53.534Z] [
+  {
+    "config": {
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "firebase-debug.log",
+        "**/.git/**",
+        "**/.github/**",
+        "**/.vscode/**",
+        "**/node_modules/**"
+      ],
+      "site": "ben0ke-aurorapay"
+    },
+    "version": "projects/912422844408/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9"
+  }
+]
+[info] i  hosting[ben0ke-aurorapay]: finalizing version... 
+[debug] [2026-05-22T07:53:53.534Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:53.534Z] Checked if tokens are valid: true, expires at: 1779437767427
+[debug] [2026-05-22T07:53:53.535Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9 updateMask=status%2Cconfig
+[debug] [2026-05-22T07:53:53.535Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ben0ke-aurorapay/versions/1d5e518fb7b3cdc9 {"status":"FINALIZED","config":{}}

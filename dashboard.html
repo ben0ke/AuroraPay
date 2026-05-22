@@ -6,10 +6,12 @@
     <title>Vezérlőpult - AuroraPay</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image" href="images/auroralogo.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -21,23 +23,6 @@
                 }
             }
         }
-
-        // Ezt a dashboard.html script részébe tedd
-        const generateTransactions = () => {
-            const partners = ['Netflix', 'Steam Store', 'Tesco', 'MOL', 'McDonalds', 'Diákmunka Kft', 'BKK Zrt'];
-            const categories = ['Szórakozás', 'Gaming', 'Élelmiszer', 'Utazás', 'Étkezés', 'Bevétel', 'Közlekedés'];
-
-            return Array.from({ length: 5 }, (_, i) => {
-                const isIncome = Math.random() > 0.7;
-                return {
-                    date: `2024.03.${20 - i}`,
-                    partner: partners[Math.floor(Math.random() * partners.length)],
-                    cat: categories[Math.floor(Math.random() * categories.length)],
-                    status: 'completed',
-                    amount: isIncome ? Math.floor(Math.random() * 50000) + 10000 : -(Math.floor(Math.random() * 15000) + 1000),
-                };
-            });
-        };
     </script>
     <style>
         .glass-panel {
@@ -45,7 +30,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        /* Görgetősáv az AI Chatbot üzeneteinek */
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -60,14 +45,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col relative">
     <custom-navbar></custom-navbar>
 
-    <main class="container mx-auto px-4 py-8 flex-grow">
+    <main class="container mx-auto px-4 py-8 flex-grow mt-16">
         <div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-gray-800 pb-6">
             <div>
                 <p class="text-gray-400 text-sm mb-1">Vezérlőpult</p>
-                <h1 class="text-3xl font-bold text-white" id="welcomeMsg">Jó reggelt!</h1>
+                <h1 class="text-3xl font-bold text-white" id="welcomeMsg">Szia!</h1>
             </div>
             <div class="mt-4 md:mt-0 flex gap-3">
                 <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition border border-gray-700">
@@ -101,25 +86,25 @@
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button onclick="window.AuthService.simulateTransaction('Utalás')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                    <button onclick="window.AuthService.openTransactionModal('Utalás')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
                         <div class="w-10 h-10 bg-primary-500/20 rounded-full flex items-center justify-center group-hover:bg-primary-500/30 text-primary-400">
                             <i data-feather="send" class="w-5 h-5"></i>
                         </div>
                         <span class="text-sm font-medium">Utalás</span>
                     </button>
-                    <button onclick="window.AuthService.simulateTransaction('Feltöltés')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                    <button onclick="window.AuthService.openTransactionModal('Feltöltés')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
                         <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center group-hover:bg-green-500/30 text-green-400">
                             <i data-feather="plus" class="w-5 h-5"></i>
                         </div>
                         <span class="text-sm font-medium">Feltöltés</span>
                     </button>
-                    <button onclick="window.AuthService.simulateTransaction('Csekkek')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                    <button onclick="window.AuthService.openTransactionModal('Csekkek')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
                         <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center group-hover:bg-yellow-500/30 text-yellow-400">
                             <i data-feather="file-text" class="w-5 h-5"></i>
                         </div>
                         <span class="text-sm font-medium">Csekkek</span>
                     </button>
-                    <button onclick="window.AuthService.simulateTransaction('Egyéb')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
+                    <button onclick="window.AuthService.openTransactionModal('Egyéb')" class="glass-panel hover:bg-gray-800 p-4 rounded-xl flex flex-col items-center gap-3 transition group cursor-pointer">
                         <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center group-hover:bg-purple-500/30 text-purple-400">
                             <i data-feather="more-horizontal" class="w-5 h-5"></i>
                         </div>
@@ -149,8 +134,7 @@
 
                     <div class="border-b border-gray-700/50 pb-4">
                         <p class="text-gray-400 text-xs uppercase tracking-wider mb-2">Megszerzett Jelvények</p>
-                        <div id="badgesContainer" class="flex flex-wrap gap-2">
-                        </div>
+                        <div id="badgesContainer" class="flex flex-wrap gap-2"></div>
                     </div>
 
                     <div class="border-b border-gray-700/50 pb-4">
@@ -171,8 +155,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <div class="lg:col-span-2 glass-panel rounded-2xl p-6">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-feather="target" class="text-primary-500"></i> Megtakarítási Zsebek</h3>
-                <div id="vaultsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                </div>
+                <div id="vaultsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
 
             <div class="glass-panel rounded-2xl p-6 flex flex-col items-center text-center justify-center">
@@ -187,15 +170,7 @@
         <div class="glass-panel rounded-2xl p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold">Tranzakciók és Számlák</h3>
-                <div class="flex gap-2">
-                    <select class="bg-gray-800 border border-gray-700 rounded-lg text-sm px-3 py-2 text-white">
-                        <option>Minden típus</option>
-                        <option>Bevétel</option>
-                        <option>Kiadás</option>
-                    </select>
-                </div>
             </div>
-
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -208,14 +183,64 @@
                             <th class="py-3 px-4 text-center">Művelet</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm" id="transactionTableBody">
-                    </tbody>
+                    <tbody class="text-sm" id="transactionTableBody"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
     <custom-footer></custom-footer>
+
+    <div id="transactionModal" class="hidden fixed inset-0 bg-gray-950/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-fade-in">
+        <div class="bg-gray-900 border border-gray-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-primary-600 to-secondary-600 p-4 flex justify-between items-center">
+                <h3 class="font-bold text-white flex items-center gap-2" id="modalTitle">
+                    <i data-feather="credit-card" class="w-5 h-5"></i> Tranzakció indítása
+                </h3>
+                <button onclick="window.AuthService.closeTransactionModal()" class="text-white hover:text-gray-200 bg-black/20 p-1.5 rounded-full transition">
+                    <i data-feather="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="modalTxForm" class="p-6 space-y-4">
+                <input type="hidden" id="modalTxType">
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="col-span-2">
+                        <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Összeg</label>
+                        <input type="number" id="modalAmount" required min="1" placeholder="0" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg py-2 px-3 focus:outline-none focus:border-primary-500 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Pénznem</label>
+                        <select id="modalCurrency" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg py-2 px-2 focus:outline-none focus:border-primary-500 font-bold">
+                            <option value="HUF">HUF (Ft)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="USD">USD ($)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Kedvezményezett / Leírás</label>
+                    <input type="text" id="modalPartner" required placeholder="pl. Kovács Anna, Tesco, Netflix" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg py-2 px-3 focus:outline-none focus:border-primary-500">
+                </div>
+
+                <div id="modalAccountContainer">
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">Bankszámlaszám (IBAN)</label>
+                    <input type="text" id="modalAccount" placeholder="HU42 1177-xxxx-xxxx-xxxx" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg py-2 px-3 focus:outline-none focus:border-primary-500 font-mono">
+                </div>
+
+                <div id="modalEmailContainer">
+                    <label class="block text-gray-400 text-xs uppercase font-bold mb-1">E-mail cím <span class="text-gray-500 lowercase">(opcionális)</span></label>
+                    <input type="email" id="modalEmail" placeholder="partner@email.com" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg py-2 px-3 focus:outline-none focus:border-primary-500">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i data-feather="check-circle" class="w-4 h-4"></i> Tranzakció végrehajtása
+                </button>
+            </form>
+        </div>
+    </div>
 
     <button onclick="toggleChat()" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-primary-500/40 hover:scale-110 transition-transform z-50">
         <i data-feather="message-circle" class="w-6 h-6"></i>
@@ -226,8 +251,7 @@
             <h3 class="font-bold text-white flex items-center gap-2"><i data-feather="cpu" class="w-4 h-4"></i> Aurora AI Assistant</h3>
             <button onclick="toggleChat()" class="text-white hover:text-gray-300"><i data-feather="x" class="w-5 h-5"></i></button>
         </div>
-        <div id="chatMessages" class="p-4 h-64 overflow-y-auto bg-gray-900 text-xs flex flex-col gap-2 scroll-smooth">
-        </div>
+        <div id="chatMessages" class="p-4 h-64 overflow-y-auto bg-gray-900 text-xs flex flex-col gap-2 scroll-smooth"></div>
         <div class="p-3 border-t border-gray-800 bg-gray-800 flex gap-2">
             <input type="text" id="chatInput" placeholder="Kérdezz a pénzedről..." class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-primary-500 text-xs">
             <button id="chatSendBtn" class="bg-primary-600 hover:bg-primary-500 text-white p-2 rounded-lg transition"><i data-feather="send" class="w-4 h-4"></i></button>
@@ -235,62 +259,5 @@
     </div>
 
     <script type="module" src="script.js"></script>
-    <script>
-        feather.replace();
-
-        const user = AuthService.getUser();
-        if (!user) {
-            window.location.href = 'index.html';
-        } else {
-            // 1. Üdvözlés és Kártya adatok
-            const fullName = user.name || "Felhasználó";
-            document.getElementById('welcomeMsg').textContent = `Szia, ${fullName.split(' ')[0]}!`;
-            document.getElementById('cardHolderName').textContent = fullName.toUpperCase();
-
-            // Egyenleg formázása
-            const formattedBalance = new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(user.balance);
-            document.getElementById('balanceDisplay').textContent = formattedBalance;
-
-            // 2. Számlaadatok panel kitöltése
-            document.getElementById('detailsName').textContent = fullName;
-            document.getElementById('detailsIBAN').textContent = user.iban || "Generálás alatt...";
-            document.getElementById('detailsSWIFT').textContent = user.swift || "AUROHUHB";
-
-            // 3. Fake Tranzakciók Generálása
-            const tbody = document.getElementById('transactionTableBody');
-            const transactions = [
-                { date: '2023.10.24.', partner: 'NyiLas Zrt', cat: 'Szórakozás', status: 'pending', amount: -6000000, type: 'invoice' },
-                { date: '2023.10.23.', partner: 'MOL Nyrt.', cat: 'Üzemanyag', status: 'completed', amount: -24018, type: 'card' },
-                { date: '2023.10.20.', partner: 'Czabai-Jancsó Bene', cat: 'Utalás', status: 'incoming', amount: 271000, type: 'transfer' },
-                { date: '2023.10.18.', partner: 'Spotify AB', cat: 'Szórakozás', status: 'pending', amount: -2190, type: 'invoice' },
-                { date: '2023.10.15.', partner: 'RPLN EV', cat: 'Bevétel', status: 'completed', amount: 675000, type: 'salary' }
-            ];
-
-            transactions.forEach(tx => {
-                const isNegative = tx.amount < 0;
-                const amountClass = isNegative ? 'text-white' : 'text-green-400 font-bold';
-                const statusBadge = tx.status === 'completed'
-                    ? '<span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs">Teljesítve</span>'
-                    : (tx.status === 'pending' ? '<span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full text-xs">Függőben</span>' : '<span class="bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full text-xs">Jóváírva</span>');
-
-                const row = `
-                        <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition">
-                            <td class="py-4 px-4 text-gray-400">${tx.date}</td>
-                            <td class="py-4 px-4 font-medium text-white">${tx.partner}</td>
-                            <td class="py-4 px-4 text-gray-400">${tx.cat}</td>
-                            <td class="py-4 px-4">${statusBadge}</td>
-                            <td class="py-4 px-4 text-right ${amountClass}">${new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(tx.amount)}</td>
-                            <td class="py-4 px-4 text-center">
-                                <button class="text-gray-500 hover:text-primary-400 transition" title="Számla letöltése">
-                                    <i data-feather="download-cloud" class="w-4 h-4 mx-auto"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                tbody.innerHTML += row;
-            });
-            feather.replace();
-        }
-    </script>
 </body>
 </html>

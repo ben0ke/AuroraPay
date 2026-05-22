@@ -1,12 +1,12 @@
 /* =========================================================================
-   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Felokosított Firestore Verzió)
+   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Teljes, Strukturált, Nem Minifikált)
    ========================================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Az általad megadott pontos, éles Firebase Config adatok
+// Konfigurációs objektum
 const firebaseConfig = {
     apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
     authDomain: "ben0ke-aurorapay.firebaseapp.com",
@@ -17,16 +17,20 @@ const firebaseConfig = {
     appId: "1:912422844408:web:c773ffbfea970e128a880d"
 };
 
-// Firebase Inicializálása
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// SEGÉDFÜGGVÉNYEK
+// Valutaformázó segédfüggvény
 const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('hu-HU', { style: 'currency', currency: 'HUF', maximumFractionDigits: 0 }).format(amount);
+    return new Intl.NumberFormat('hu-HU', {
+        style: 'currency',
+        currency: 'HUF',
+        maximumFractionDigits: 0
+    }).format(amount);
 };
 
+// Véletlenszerű IBAN generátor
 function generateIBAN() {
     const bankCode = '117';
     const branch = Math.floor(1000 + Math.random() * 9000);
@@ -34,30 +38,26 @@ function generateIBAN() {
     return `HU42 ${bankCode}7-${branch}-${account}`;
 }
 
-// FELADAT: Véletlenszerű múltbéli tranzakció-generátor a regisztrációhoz
+// Véletlenszerű múltbéli előzménygenerátor
 function generateInitialHistory(startBalance) {
     const partners = ['Netflix', 'Steam Store', 'Tesco', 'MOL Nyrt.', 'McDonalds', 'Diákmunka Kft', 'BKK Zrt', 'Spotify AB', 'RPLN EV'];
     const categories = ['Szórakozás', 'Gaming', 'Élelmiszer', 'Üzemanyag', 'Étkezés', 'Bevétel', 'Közlekedés', 'Szórakozás', 'Bevétel'];
 
-    let history = [];
-
-    // 1. Első rekordként rögzítjük a megadott tőkét
-    history.push({
+    let history = [{
         date: new Date().toLocaleDateString('hu-HU'),
         partner: 'AuroraPay Kezdőtőke',
         cat: 'Rendszer',
         amount: startBalance,
         status: 'completed'
-    });
+    }];
 
-    // 2. Generálunk mellé 4 darab élethű múltbéli költést/bevételt
     for (let i = 1; i <= 4; i++) {
         const isIncome = Math.random() > 0.75;
         const randIdx = Math.floor(Math.random() * partners.length);
         const amount = isIncome ? Math.floor(Math.random() * 45000) + 12000 : -(Math.floor(Math.random() * 14000) + 1500);
 
         let txDate = new Date();
-        txDate.setDate(txDate.getDate() - i); // Napokkal ezelőtti dátumok
+        txDate.setDate(txDate.getDate() - i);
 
         history.push({
             date: txDate.toLocaleDateString('hu-HU'),
@@ -70,7 +70,7 @@ function generateInitialHistory(startBalance) {
     return history;
 }
 
-// 3. AUTH SERVICE (Üzleti Logika és Felhő Szinkronizáció)
+// CORE METÓDUSOK ÉS KLIENS INTERFÉSZ
 window.AuthService = {
     init: function () {
         onAuthStateChanged(auth, async (user) => {
@@ -100,7 +100,6 @@ window.AuthService = {
         });
     },
 
-    // Regisztráció az egyénileg beállított egyenleggel és a generált listával
     signup: async function (name, email, password, age, customBalance) {
         try {
             let finalBalance = parseInt(customBalance);
@@ -109,8 +108,6 @@ window.AuthService = {
 
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
-            // Legeneráljuk a véletlenszerű tranzakciós listát
             const randomHistory = generateInitialHistory(finalBalance);
 
             const userData = {
@@ -118,7 +115,7 @@ window.AuthService = {
                 name: name,
                 email: email,
                 age: age,
-                balance: finalBalance, // A felhaszáló által megadott összeg lesz mentve!
+                balance: finalBalance,
                 iban: generateIBAN(),
                 swift: 'AUROHUHB',
                 joined: new Date().toLocaleDateString('hu-HU'),
@@ -127,63 +124,90 @@ window.AuthService = {
                     { id: 1, name: 'Sziget Fesztivál', target: 50000, current: 0 },
                     { id: 2, name: 'Vésztartalék', target: 200000, current: 0 }
                 ],
-                transactions: randomHistory // A random generált lista bekerül a felhőbe
+                transactions: randomHistory
             };
 
             await setDoc(doc(db, "users", user.uid), userData);
             return true;
         } catch (error) {
-            alert("Hiba a regisztráció során: " + error.message);
+            alert("Hiba: " + error.message);
             return false;
         }
     },
 
-    // Kézi tranzakciók szimulációja (Utalás, Feltöltés, Csekkek, Egyéb)
-    simulateTransaction: async function (type) {
+    openTransactionModal: function (type) {
+        const modal = document.getElementById('transactionModal');
+        if (!modal) return;
+
+        document.getElementById('modalTxType').value = type;
+        document.getElementById('modalTitle').innerHTML = `<i data-feather="credit-card" class="w-5 h-5"></i> ${type} indítása`;
+        document.getElementById('modalTxForm').reset();
+
+        if (type === 'Feltöltés') {
+            document.getElementById('modalAccountContainer').classList.add('hidden');
+            document.getElementById('modalEmailContainer').classList.add('hidden');
+        } else {
+            document.getElementById('modalAccountContainer').classList.remove('hidden');
+            document.getElementById('modalEmailContainer').classList.remove('hidden');
+        }
+
+        modal.classList.remove('hidden');
+        if (typeof feather !== 'undefined') feather.replace();
+    },
+
+    closeTransactionModal: function () {
+        document.getElementById('transactionModal').classList.add('hidden');
+    },
+
+    executeModalTransaction: async function (amount, currency, partner, account, email, type) {
         const user = this.getUser();
         if (!user) return;
 
-        let amountStr = prompt(`Mennyit szeretnél ${type === 'Feltöltés' ? 'feltölteni a számládra' : 'utalni / fizetni'}? (HUF)`);
-        if (!amountStr) return;
+        let baseAmount = parseInt(amount);
+        if (isNaN(baseAmount) || baseAmount <= 0) return;
 
-        let amount = parseInt(amountStr.replace(/\D/g, ''));
-        if (isNaN(amount) || amount <= 0) {
-            alert("Érvénytelen összeg!");
+        let rate = 1;
+        let currencySymbol = "Ft";
+        if (currency === 'EUR') { rate = 400; currencySymbol = "€"; }
+        if (currency === 'USD') { rate = 370; currencySymbol = "$"; }
+
+        let hufEquivalent = baseAmount * rate;
+        let finalAmountForTable = type === 'Feltöltés' ? hufEquivalent : -hufEquivalent;
+
+        if (type !== 'Feltöltés' && user.balance + finalAmountForTable < 0) {
+            alert("Sikertelen tranzakció: Nincs elegendő fedezet!");
             return;
         }
 
-        if (type !== 'Feltöltés') amount = -amount;
+        user.balance += finalAmountForTable;
+        let fullDescription = partner;
+        if (type !== 'Feltöltés' && account) fullDescription += ` (Számla: ${account})`;
 
-        if (user.balance + amount < 0) {
-            alert("Sikertelen tranzakció: Nincs elegendő fedezet a számládon!");
-            return;
-        }
-
-        let partner = prompt("Add meg a partner nevét (pl. Tesco, Netflix, MOL Nyrt.):");
-        if (!partner) partner = type;
-
-        user.balance += amount;
         user.transactions.unshift({
             date: new Date().toLocaleDateString('hu-HU'),
-            partner: partner,
+            partner: fullDescription,
             cat: type,
-            amount: amount,
+            amount: finalAmountForTable,
             status: 'completed'
         });
 
-        // Gamification mérföldkövek
-        if (user.transactions.length >= 6 && !user.badges.includes('Aktív Költekező')) user.badges.push('Aktív Költekező');
-        if (user.balance > 10000000 && !user.badges.includes('Milliárdos növendék')) user.badges.push('Milliárdos növendék');
+        if (user.transactions.length >= 6 && !user.badges.includes('Aktív Költekező')) {
+            user.badges.push('Aktív Költekező');
+        }
 
         const docRef = doc(db, "users", user.uid);
-        await updateDoc(docRef, { balance: user.balance, transactions: user.transactions, badges: user.badges });
+        await updateDoc(docRef, {
+            balance: user.balance,
+            transactions: user.transactions,
+            badges: user.badges
+        });
 
         localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
         window.dispatchEvent(new Event('auth-change'));
-        showNotification(`${type} sikeresen elmentve!`);
+        this.closeTransactionModal();
+        showNotification(`Sikeres ${type}: ${amount} ${currencySymbol}`);
     },
 
-    // FELADAT: Zsebek logikája levonással és tranzakciós listához adással
     depositToVault: async function (vaultId) {
         const user = this.getUser();
         if (!user) return;
@@ -191,33 +215,32 @@ window.AuthService = {
         const vaultIndex = user.vaults.findIndex(v => v.id === vaultId);
         if (vaultIndex === -1) return;
 
-        let amountStr = prompt(`Mennyit szeretnél átrakni a főegyenlegedből a(z) "${user.vaults[vaultIndex].name}" zsebbe? (HUF)`);
+        let amountStr = prompt(`Mennyit raksz át a(z) "${user.vaults[vaultIndex].name}" zsebbe? (HUF)`);
         if (!amountStr) return;
 
         let amount = parseInt(amountStr.replace(/\D/g, ''));
         if (isNaN(amount) || amount <= 0) return;
 
         if (user.balance - amount < 0) {
-            alert("Sikertelen művelet: Nincs elegendő szabad egyenleged ehhez a megtakarításhoz!");
+            alert("Nincs elegendő szabad egyenleged a kártyádon!");
             return;
         }
 
-        // 1. LEVONÁS a főegyenlegből, HOZZÁADÁS a zsebhez
         user.balance -= amount;
         user.vaults[vaultIndex].current += amount;
 
-        // 2. HOZZÁADÁS a tranzakciós listához negatív előjellel
         user.transactions.unshift({
             date: new Date().toLocaleDateString('hu-HU'),
-            partner: `Zseb: ${user.vaults[vaultIndex].name}`,
+            partner: `Zsebbővítés: ${user.vaults[vaultIndex].name}`,
             cat: 'Megtakarítás',
             amount: -amount,
             status: 'completed'
         });
 
-        if (!user.badges.includes('Tudatos Tervező')) user.badges.push('Tudatos Tervező');
+        if (!user.badges.includes('Tudatos Tervező')) {
+            user.badges.push('Tudatos Tervező');
+        }
 
-        // Mentés és szinkronizáció a Firestore-ba
         const docRef = doc(db, "users", user.uid);
         await updateDoc(docRef, {
             balance: user.balance,
@@ -228,29 +251,13 @@ window.AuthService = {
 
         localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
         window.dispatchEvent(new Event('auth-change'));
-        showNotification(`Sikeresen elraktál ${formatCurrency(amount)}-t!`);
+        showNotification(`Áthelyezve a zsebbe: ${formatCurrency(amount)}`);
     }
 };
 
 window.AuthService.init();
 
-// 4. UI NATIVE KOMPONENSEK
-class CustomNavbar extends HTMLElement {
-    connectedCallback() { this.render(); window.addEventListener('auth-change', () => this.render()); }
-    render() {
-        const user = window.AuthService.getUser();
-        let displayName = user ? (user.name ? user.name.split(' ')[0] : user.email.split('@')[0]) : '';
-        let rightMenuHtml = user ? `<div class="flex items-center gap-4 ml-4 pl-4 border-l border-gray-700"><div class="text-right hidden lg:block"><span class="block text-white text-sm font-bold leading-tight">${displayName}</span><span class="block text-gray-500 text-xs">Prémium fiók</span></div><a href="dashboard.html" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white p-2 rounded-full transition"><i data-feather="user" class="w-5 h-5"></i></a><button onclick="window.AuthService.logout()" class="text-red-400 hover:text-red-300 transition" title="Kilépés"><i data-feather="log-out" class="w-5 h-5"></i></button></div>` : `<a href="login.html" class="bg-gradient-to-r from-primary-600 to-secondary-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md">Belépés</a>`;
-        this.innerHTML = `<nav class="bg-gray-900/90 backdrop-blur-md border-b border-gray-800 fixed w-full z-50 top-0"><div class="container mx-auto px-4 py-3 flex justify-between items-center"><a href="index.html" class="flex items-center gap-2 font-bold text-xl text-white"><img src="https://huggingface.co/spaces/ben0ke/aurorapay-p-nzvar-zsl-k-fiataloknak/resolve/main/images/auroralogo.png" class="h-8" alt="Logo"> AuroraPay</a><div class="hidden md:flex gap-6 items-center"><a href="features.html" class="text-gray-300 hover:text-white transition font-medium">Funkciók</a><a href="learn.html" class="text-gray-300 hover:text-white transition font-medium">Tudástár</a>${rightMenuHtml}</div></div></nav>`;
-        if (typeof feather !== 'undefined') feather.replace();
-    }
-}
-if (!customElements.get('custom-navbar')) customElements.define('custom-navbar', CustomNavbar);
-
-class CustomFooter extends HTMLElement { connectedCallback() { this.innerHTML = `<footer class="bg-gray-900 border-t border-gray-800 py-8 mt-auto"><div class="container mx-auto px-4 text-center text-gray-400 text-sm"><p>&copy; ${new Date().getFullYear()} AuroraPay Zrt. Minden jog fenntartva.</p></div></footer>`; } }
-if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
-
-// 5. DOM INTERFÉSZ ÉS MEGJELENÍTÉS
+// INTERAKTÍV DOM RENDER MOTOR
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
@@ -268,6 +275,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.location.pathname.includes('dashboard.html')) {
+
+        document.getElementById('modalTxForm')?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            window.AuthService.executeModalTransaction(
+                document.getElementById('modalAmount').value,
+                document.getElementById('modalCurrency').value,
+                document.getElementById('modalPartner').value,
+                document.getElementById('modalAccount').value,
+                document.getElementById('modalEmail').value,
+                document.getElementById('modalTxType').value
+            );
+        });
+
         const renderRealtimeData = () => {
             const user = window.AuthService.getUser();
             if (!user) return;
@@ -278,20 +298,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.getElementById('detailsName')) document.getElementById('detailsName').innerText = user.name;
             if (document.getElementById('detailsIBAN')) document.getElementById('detailsIBAN').innerText = user.iban || "Generálás alatt...";
 
+            // Jelvények kirajzolása
             const badgesDiv = document.getElementById('badgesContainer');
             if (badgesDiv && user.badges) {
-                badgesDiv.innerHTML = user.badges.map(b => `<div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full border border-yellow-400/50 shadow-md select-none">${b}</div>`).join('');
+                badgesDiv.innerHTML = user.badges.map(b => `
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full border border-yellow-400/50 shadow-md select-none">
+                        ${b}
+                    </div>`).join('');
             }
 
-            // FELADAT: Zsebek renderelése 100%-os PIPÁVAL (✅)
+            // Zsebek kezelése pipával
             const vaultsDiv = document.getElementById('vaultsContainer');
             if (vaultsDiv && user.vaults) {
                 vaultsDiv.innerHTML = user.vaults.map(v => {
                     const percent = Math.min(100, Math.round((v.current / v.target) * 100));
-
-                    // Ha elérte a 100%-ot, kap egy zöld pipát a neve mellé
                     const isCompleted = v.current >= v.target;
-                    const checkmark = isCompleted ? '<span class="text-green-400 font-bold ml-2">✅ Sikeres</span>' : '';
+                    const checkmark = isCompleted ? '<span class="text-green-400 font-bold ml-2">✅ Kész</span>' : '';
 
                     return `
                     <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700/50 flex flex-col justify-between">
@@ -311,11 +333,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).join('');
             }
 
+            // Táblázat
             const tbody = document.getElementById('transactionTableBody');
             if (tbody && user.transactions) {
                 tbody.innerHTML = user.transactions.map(tx => {
                     const isPositive = tx.amount > 0;
-                    return `<tr class="border-b border-gray-800 hover:bg-gray-800/50 transition"><td class="py-4 px-4 text-gray-400">${tx.date}</td><td class="py-4 px-4 font-medium text-white">${tx.partner}</td><td class="py-4 px-4 text-gray-400">${tx.cat}</td><td class="py-4 px-4"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs">Teljesítve</span></td><td class="py-4 px-4 text-right ${isPositive ? 'text-green-400 font-bold' : 'text-white'}">${isPositive ? '+' : ''}${formatCurrency(tx.amount)}</td><td class="py-4 px-4 text-center"><button class="text-gray-500 hover:text-primary-400 transition"><i data-feather="download-cloud" class="w-4 h-4 mx-auto"></i></button></td></tr>`;
+                    return `
+                    <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition">
+                        <td class="py-4 px-4 text-gray-400">${tx.date}</td>
+                        <td class="py-4 px-4 font-medium text-white">${tx.partner}</td>
+                        <td class="py-4 px-4 text-gray-400">${tx.cat}</td>
+                        <td class="py-4 px-4"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded-full text-xs">Teljesítve</span></td>
+                        <td class="py-4 px-4 text-right ${isPositive ? 'text-green-400 font-bold' : 'text-white'}">${isPositive ? '+' : ''}${formatCurrency(tx.amount)}</td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="text-gray-500 hover:text-primary-400 transition">
+                                <i data-feather="download-cloud" class="w-4 h-4 mx-auto"></i>
+                            </button>
+                        </td>
+                    </tr>`;
                 }).join('');
                 if (typeof feather !== 'undefined') feather.replace();
             }
@@ -336,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 6. CHATBOT ASSZISZTENS LOGIKA
+// CHATBOT LOGIKA ÉS ASSZISZTENS
 window.toggleChat = function () {
     const chat = document.getElementById('chatWindow'); if (!chat) return;
     chat.classList.toggle('hidden');
@@ -367,10 +402,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const lower = text.toLowerCase(); const user = window.AuthService.getUser();
             let res = "Sajnos ezt még nem tudom feldolgozni. Kérdezz az egyenlegedről, jelvényekről, zsebekről vagy indíts utalást!";
             if (!user) { res = "Kérlek lépj be az adatok lekéréséhez."; }
-            else if (lower.includes('egyenleg') || lower.includes('pénz') || lower.includes('mennyi')) res = `A Cloud Firestore-ban táringolt aktuális egyenleged: <strong>${formatCurrency(user.balance)}</strong>.`;
+            else if (lower.includes('egyenleg') || lower.includes('pénz') || lower.includes('mennyi')) res = `A Cloud Firestore-ban tárolt aktuális egyenleged: <strong>${formatCurrency(user.balance)}</strong>.`;
             else if (lower.includes('zseb') || lower.includes('cél') || lower.includes('megtakarítás')) res = "Megtakarítási céljaid helyzete:<br>" + user.vaults.map(v => `• <strong>${v.name}</strong>: ${formatCurrency(v.current)} / ${formatCurrency(v.target)} ${v.current >= v.target ? '✅' : ''}`).join('<br>');
             else if (lower.includes('jelvény') || lower.includes('badge') || lower.includes('plecsni')) res = `A megszerzett plecsnid listája: <strong>${user.badges.join(', ')}</strong>.`;
-            else if (lower.includes('utal') || lower.includes('fizet') || lower.includes('küld')) res = `Indíthatunk egy tranzakciót! Kattints az <a href="#" onclick="window.AuthService.simulateTransaction('Utalás')" class="text-primary-400 underline font-bold">ide</a> linkre az utalás panel megnyitásához.`;
+            else if (lower.includes('utal') || lower.includes('fizet') || lower.includes('küld')) res = `Indíthatunk egy tranzakciót! Kattints az <a href="#" onclick="window.AuthService.openTransactionModal('Utalás')" class="text-primary-400 underline font-bold">ide</a> linkre az egyedi utalási felület megnyitásához.`;
             else if (lower.includes('szia') || lower.includes('hello')) res = `Szia ${user.name.split(' ')[0]}! Milyen banki műveletben segítsek ma?`;
             addBotMessage(res);
         }, 700);
@@ -379,18 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 });
 
-// A BETÖLTŐKÉPERNYŐ ELTÜNTETÉSE (PRELOADER)
-window.addEventListener('load', () => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.style.opacity = '0';
-            setTimeout(() => preloader.remove(), 700);
-        }, 800);
-    }
-});
-
-// Értesítő rendszer
+// FINTECH TOAST NOTIFICATION RENDSZER
 function showNotification(text) {
     const toast = document.createElement('div');
     toast.className = 'fixed bottom-4 right-4 bg-gray-800 border border-primary-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-[9999]';
@@ -400,3 +424,14 @@ function showNotification(text) {
     setTimeout(() => toast.classList.remove('translate-y-20', 'opacity-0'), 100);
     setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 3000);
 }
+
+// TAKARÓ RÉTEG (PRELOADER) KEZELŐ
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => preloader.remove(), 700);
+        }, 800);
+    }
+});
