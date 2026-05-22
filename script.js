@@ -1,28 +1,28 @@
 /* =========================================================================
-   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Realtime Database Verzió)
+   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Felokosított Firestore Verzió)
    ========================================================================= */
 
-// 1. FIREBASE INTERFÉSZ IMPORTÁLÁSA (Realtime Database SDK)
+// 1. FIREBASE IMPORTÁLÁSA (Ennek mindig legelöl kell lennie!)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// !!! Az általad megadott pontos, éles Firebase Config adatok !!!
 const firebaseConfig = {
-  apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
-  authDomain: "ben0ke-aurorapay.firebaseapp.com",
-  databaseURL: "https://ben0ke-aurorapay-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "ben0ke-aurorapay",
-  storageBucket: "ben0ke-aurorapay.firebasestorage.app",
-  messagingSenderId: "912422844408",
-  appId: "1:912422844408:web:c773ffbfea970e128a880d",
-  measurementId: "G-H49296GLP7"
+    apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
+    authDomain: "ben0ke-aurorapay.firebaseapp.com",
+    projectId: "ben0ke-aurorapay",
+    databaseURL: "https://ben0ke-aurorapay-default-rtdb.europe-west1.firebasedatabase.app",
+    storageBucket: "ben0ke-aurorapay.appspot.com",
+    messagingSenderId: "912422844408",
+    appId: "1:912422844408:web:c773ffbfea970e128a880d"
 };
 
-// Rendszer inicializálása
+// Firebase Inicializálása
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const rtdb = getDatabase(app);
+const db = getFirestore(app);
+
 
 // 2. SEGÉDFÜGGVÉNYEK
 const formatCurrency = (amount) => {
@@ -30,24 +30,22 @@ const formatCurrency = (amount) => {
 };
 
 function generateIBAN() {
-    const bankCode = '117'; 
-    const branch = Math.floor(1000 + Math.random() * 9000); 
-    const account = Math.floor(10000000 + Math.random() * 90000000); 
+    const bankCode = '117';
+    const branch = Math.floor(1000 + Math.random() * 9000);
+    const account = Math.floor(10000000 + Math.random() * 90000000);
     return `HU42 ${bankCode}7-${branch}-${account}`;
 }
 
-// -----------------------------------------------------------------
-// 3. REALTIME DATABASE AUTH SERVICE
-// -----------------------------------------------------------------
+
+// 3. AUTH SERVICE (Adatbázis és Belépés Kezelése)
 window.AuthService = {
-    init: function() {
+    init: function () {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Adatlekérés a Realtime Database JSON fájlstruktúrájából
-                const userRef = ref(rtdb, "users/" + user.uid);
-                const snapshot = await get(userRef);
-                if (snapshot.exists()) {
-                    localStorage.setItem('aurorapay_current_user', JSON.stringify(snapshot.val()));
+                const docRef = doc(db, "users", user.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    localStorage.setItem('aurorapay_current_user', JSON.stringify(docSnap.data()));
                     window.dispatchEvent(new Event('auth-change'));
                 }
             } else {
@@ -57,59 +55,169 @@ window.AuthService = {
         });
     },
 
-    getUser: function() {
+    getUser: function () {
         const data = localStorage.getItem('aurorapay_current_user');
         return data ? JSON.parse(data) : null;
     },
 
-    logout: function() {
+    logout: function () {
         signOut(auth).then(() => {
             localStorage.removeItem('aurorapay_current_user');
             window.location.href = 'index.html';
         });
     },
 
-    signup: async function(name, email, password, age) {
+    // FELADAT: Regisztráció kibővítése dinamikus egyenleggel és zsebekkel
+    signup: async function (name, email, password, age, customBalance) {
         try {
+            // Egyenleg normalizálása a kért határok között (1M - 1Mrd Ft)
+            let finalBalance = parseInt(customBalance);
+            if (isNaN(finalBalance) || finalBalance < 1000000) finalBalance = 1000000;
+            if (finalBalance > 1000000000) finalBalance = 1000000000;
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Zsebekkel és Jelvényekkel kibővített teljes adatmodell a jövőbeli backend mentéshez
             const userData = {
                 uid: user.uid,
                 name: name,
                 email: email,
                 age: age,
-                balance: 18890420,
+                balance: finalBalance,
                 iban: generateIBAN(),
                 swift: 'AUROHUHB',
                 joined: new Date().toLocaleDateString('hu-HU'),
-                badges: ['Újonc', 'Tudatos Tervező'], 
-                vaults: [ 
-                    { id: 1, name: 'Sziget Fesztivál', target: 50000, current: 15000 },
-                    { id: 2, name: 'Vésztartalék', target: 200000, current: 80000 }
+                badges: ['Újonc'], // Alapértelmezett kezdő jelvény (Gamification)
+                vaults: [ // Alapértelmezett megtakarítási zsebek (Savings Vaults)
+                    { id: 1, name: 'Sziget Fesztivál', target: 50000, current: 0 },
+                    { id: 2, name: 'Vésztartalék', target: 200000, current: 0 }
                 ],
                 transactions: [
-                    { date: new Date().toLocaleDateString('hu-HU'), partner: 'AuroraPay Bónusz', cat: 'Bevétel', amount: 18890420, status: 'completed' }
+                    { date: new Date().toLocaleDateString('hu-HU'), partner: 'AuroraPay Kezdőtőke', cat: 'Bevétel', amount: finalBalance, status: 'completed' }
                 ]
             };
 
-            // Mentés a Realtime Database-be a Firestore helyett
-            await set(ref(rtdb, "users/" + user.uid), userData);
+            await setDoc(doc(db, "users", user.uid), userData);
             return true;
         } catch (error) {
             console.error("Hiba történt a regisztráció során:", error.message);
             alert("Hiba: " + error.message);
             return false;
         }
+    },
+
+    // FELADAT: Tranzakciók (Utalás, Feltöltés, Csekk) Szimulációja és Mentése
+    simulateTransaction: async function (type) {
+        const user = this.getUser();
+        if (!user) return;
+
+        let amountStr = prompt(`Mennyit szeretnél ${type === 'Feltöltés' ? 'feltölteni a számládra' : 'utalni / fizetni'}? (HUF)`);
+        if (!amountStr) return;
+
+        let amount = parseInt(amountStr.replace(/\D/g, ''));
+        if (isNaN(amount) || amount <= 0) {
+            alert("Érvénytelen összeg!");
+            return;
+        }
+
+        if (type !== 'Feltöltés') {
+            amount = -amount;
+        }
+
+        if (user.balance + amount < 0) {
+            alert("Sikertelen tranzakció: Nincs elegendő fedezet a számládon!");
+            return;
+        }
+
+        let partner = prompt("Add meg a partner nevét vagy a leírást (pl. Tesco, Netflix, MOL):");
+        if (!partner) partner = type;
+
+        // Helyi adatok frissítése
+        user.balance += amount;
+        user.transactions.unshift({
+            date: new Date().toLocaleDateString('hu-HU'),
+            partner: partner,
+            cat: type,
+            amount: amount,
+            status: 'completed'
+        });
+
+        // Játékosítás (Gamification) - Jelvények adományozása mérföldköveknél
+        if (user.transactions.length >= 5 && !user.badges.includes('Aktív Költekező')) {
+            user.badges.push('Aktív Költekező');
+        }
+        if (user.balance > 10000000 && !user.badges.includes('Milliárdos növendék')) {
+            user.badges.push('Milliárdos növendék');
+        }
+
+        // Felhő alapú adatbázis mentés és szinkronizáció
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, {
+            balance: user.balance,
+            transactions: user.transactions,
+            badges: user.badges
+        });
+
+        localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
+        window.dispatchEvent(new Event('auth-change'));
+        if (typeof showNotification === 'function') showNotification(`${type} sikeresen feldolgozva!`);
+    },
+
+    // FELADAT: Zsebek logikája és Adatbázis mentése (Befizetés)
+    depositToVault: async function (vaultId) {
+        const user = this.getUser();
+        if (!user) return;
+
+        const vaultIndex = user.vaults.findIndex(v => v.id === vaultId);
+        if (vaultIndex === -1) return;
+
+        let amountStr = prompt(`Mennyit szeretnél félretenni a(z) "${user.vaults[vaultIndex].name}" zsebbe? (HUF)`);
+        if (!amountStr) return;
+
+        let amount = parseInt(amountStr.replace(/\D/g, ''));
+        if (isNaN(amount) || amount <= 0) return;
+
+        if (user.balance - amount < 0) {
+            alert("Nincs elegendő szabad egyenleged a megtakarításhoz!");
+            return;
+        }
+
+        // Logikai elszámolás: Levonás a főegyenlegből, hozzáadás a zsebhez
+        user.balance -= amount;
+        user.vaults[vaultIndex].current += amount;
+
+        user.transactions.unshift({
+            date: new Date().toLocaleDateString('hu-HU'),
+            partner: `Cél: ${user.vaults[vaultIndex].name}`,
+            cat: 'Megtakarítás',
+            amount: -amount,
+            status: 'completed'
+        });
+
+        if (!user.badges.includes('Tudatos Tervező')) {
+            user.badges.push('Tudatos Tervező');
+        }
+
+        // Mentés Cloud Firestore-ba
+        const docRef = doc(db, "users", user.uid);
+        await updateDoc(docRef, {
+            balance: user.balance,
+            vaults: user.vaults,
+            transactions: user.transactions,
+            badges: user.badges
+        });
+
+        localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
+        window.dispatchEvent(new Event('auth-change'));
+        if (typeof showNotification === 'function') showNotification("Sikeres megtakarítás!");
     }
 };
 
+// Figyelő elindítása
 window.AuthService.init();
 
-// -----------------------------------------------------------------
+
 // 4. UI KOMPONENSEK (Navigáció és Lábléc)
-// -----------------------------------------------------------------
 class CustomNavbar extends HTMLElement {
     connectedCallback() {
         this.render();
@@ -149,10 +257,11 @@ class CustomNavbar extends HTMLElement {
                     </div>
                 </div>
             </nav>`;
-        if(typeof feather !== 'undefined') feather.replace();
+        if (typeof feather !== 'undefined') feather.replace();
     }
 }
 if (!customElements.get('custom-navbar')) customElements.define('custom-navbar', CustomNavbar);
+
 
 class CustomFooter extends HTMLElement {
     connectedCallback() {
@@ -161,51 +270,52 @@ class CustomFooter extends HTMLElement {
 }
 if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
 
-// -----------------------------------------------------------------
-// 5. OLDAL LOGIKÁK (Űrlap és Dashboard Kezelés)
-// -----------------------------------------------------------------
+
+// 5. OLDAL LOGIKÁK (Űrlap és Dashboard)
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Regisztrációs űrlap eseménykezelő
+
+    // Regisztrációs űrlap
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         if (window.AuthService.getUser() && !window.location.pathname.includes('dashboard.html')) {
             window.location.href = 'dashboard.html';
         }
 
-        signupForm.addEventListener('submit', function(e) {
+        signupForm.addEventListener('submit', function (e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitSignup');
-            if(submitBtn) { 
-                submitBtn.disabled = true; 
+            if (submitBtn) {
+                submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="animate-spin" data-feather="loader"></i> Feldolgozás...';
-                if(window.feather) feather.replace();
+                if (window.feather) feather.replace();
             }
-            
+
             const name = document.getElementById('fullname')?.value || 'Felhasználó';
             const email = document.getElementById('email')?.value || '';
             const password = document.getElementById('password')?.value || '';
             const age = document.getElementById('age')?.value || '18';
-            
-            window.AuthService.signup(name, email, password, age).then((success) => {
-                if(success) {
+            const startBalance = document.getElementById('startBalance')?.value || '18890420'; // Új dinamikus input
+
+            window.AuthService.signup(name, email, password, age, startBalance).then((success) => {
+                if (success) {
                     window.location.href = 'dashboard.html';
                 } else {
-                    if(submitBtn) { 
-                        submitBtn.disabled = false; 
-                        submitBtn.innerHTML = 'Újrapróbálkozás'; 
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Újrapróbálkozás';
                     }
                 }
             });
         });
     }
 
-    // Dashboard Adatbetöltés és Új panelek kirajzolása
+    // Dashboard Adatbetöltés és Dinamikus DOM frissítés
     if (window.location.pathname.includes('dashboard.html')) {
-        const renderDashboard = () => {
+        const renderRealtimeData = () => {
             const user = window.AuthService.getUser();
-            if (!user) { window.location.href = 'login.html'; return; }
+            if (!user) return;
 
+            // Alapértelmezett elemek frissítése az adatbázisból
             const els = {
                 welcome: document.getElementById('welcomeMsg'),
                 balance: document.getElementById('balanceDisplay'),
@@ -219,39 +329,40 @@ document.addEventListener('DOMContentLoaded', () => {
             if (els.balance) els.balance.innerText = formatCurrency(user.balance);
             if (els.cardHolder) els.cardHolder.innerText = user.name.toUpperCase();
             if (els.detailsName) els.detailsName.innerText = user.name;
-            if (els.iban) els.iban.innerText = user.iban;
+            if (els.iban) els.iban.innerText = user.iban || "Generálás alatt...";
 
-            // Játékosítás (Badges) kirajzolása a HTML-be
+            // JÁTÉKOSÍTÁS: Jelvények lerenderelése a felületről
             const badgesDiv = document.getElementById('badgesContainer');
-            if(badgesDiv && user.badges) {
-                badgesDiv.innerHTML = user.badges.map(b => 
+            if (badgesDiv && user.badges) {
+                badgesDiv.innerHTML = user.badges.map(b =>
                     `<div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full shadow-lg border border-yellow-400/50 select-none">${b}</div>`
                 ).join('');
             }
 
-            // Megtakarítási zsebek (Vaults) feltöltése haladási sávval
+            // ZSEBEK KIALAKÍTÁSA: Haladási sávok dinamikus számítása
             const vaultsDiv = document.getElementById('vaultsContainer');
-            if(vaultsDiv && user.vaults) {
+            if (vaultsDiv && user.vaults) {
                 vaultsDiv.innerHTML = user.vaults.map(v => {
                     const percent = Math.min(100, Math.round((v.current / v.target) * 100));
                     return `
-                    <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700/50">
+                    <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700/50 flex flex-col justify-between">
                         <div class="flex justify-between text-sm mb-2">
                             <span class="font-bold text-white">${v.name}</span>
                             <span class="text-primary-400 font-mono">${formatCurrency(v.current)}</span>
                         </div>
                         <div class="w-full bg-gray-700 rounded-full h-2.5 mb-2">
-                            <div class="bg-primary-500 h-2.5 rounded-full shadow-[0_0_10px_rgba(14,165,233,0.5)]" style="width: ${percent}%"></div>
+                            <div class="bg-primary-500 h-2.5 rounded-full shadow-[0_0_10px_rgba(14,165,233,0.5)] transition-all duration-500" style="width: ${percent}%"></div>
                         </div>
-                        <div class="flex justify-between text-[10px] text-gray-500">
+                        <div class="flex justify-between text-[10px] text-gray-500 mb-3">
                             <span>${percent}% teljesítve</span>
                             <span>Cél: ${formatCurrency(v.target)}</span>
                         </div>
+                        <button onclick="window.AuthService.depositToVault(${v.id})" class="w-full bg-gray-700 hover:bg-gray-600 text-white text-xs py-1.5 rounded-lg transition font-medium">Befizetés a zsebbe</button>
                     </div>`;
                 }).join('');
             }
 
-            // Tranzakciók renderelése
+            // Valós tranzakciók renderelése a táblázatba
             if (els.tbody && user.transactions) {
                 els.tbody.innerHTML = user.transactions.map(tx => {
                     const isPositive = tx.amount > 0;
@@ -264,23 +375,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td class="py-4 px-4 text-right ${isPositive ? 'text-green-400 font-bold' : 'text-white'}">
                             ${isPositive ? '+' : ''}${formatCurrency(tx.amount)}
                         </td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="text-gray-500 hover:text-primary-400 transition" title="Számla letöltése">
+                                <i data-feather="download-cloud" class="w-4 h-4 mx-auto"></i>
+                            </button>
+                        </td>
                     </tr>`;
                 }).join('');
+                if (typeof feather !== 'undefined') feather.replace();
             }
         };
 
-        renderDashboard();
-        window.addEventListener('auth-change', renderDashboard);
+        renderRealtimeData();
+        window.addEventListener('auth-change', renderRealtimeData);
 
-        // Számlaszétdobás QR-kód logikája
+        // SZÁMLASZÉTDOBÁS: QR Kód eseménykezelő logika
         document.getElementById('generateQRBtn')?.addEventListener('click', () => {
             const amount = document.getElementById('splitAmount').value;
             const qrBox = document.getElementById('qrcode');
-            if(amount && amount > 0) {
+            const currentUser = window.AuthService.getUser();
+            if (amount && amount > 0 && currentUser) {
                 qrBox.innerHTML = '';
                 qrBox.classList.remove('hidden');
                 new QRCode(qrBox, {
-                    text: `AURORAPAY:${window.AuthService.getUser().iban}?amount=${amount}`,
+                    text: `AURORAPAY:${currentUser.iban}?amount=${amount}`,
                     width: 128, height: 128
                 });
             }
@@ -289,9 +407,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // -----------------------------------------------------------------
-// 6. INTELLIGENS CHATBOT & UI EXTRÁK
+// 6. AURORA AI CHATBOT OKOSÍTÁS LOGIKA
 // -----------------------------------------------------------------
-window.toggleChat = function() {
+window.toggleChat = function () {
     const chat = document.getElementById('chatWindow');
     if (!chat) return;
     chat.classList.toggle('hidden');
@@ -304,14 +422,14 @@ window.toggleChat = function() {
 function addBotMessage(text) {
     const msgs = document.getElementById('chatMessages');
     if (!msgs) return;
-    msgs.innerHTML += `<div class="flex justify-start mb-4"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-xs font-bold text-white mr-2 flex-shrink-0 shadow-md">AI</div><div class="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-none text-sm max-w-[80%] shadow-sm">${text}</div></div>`;
+    msgs.innerHTML += `<div class="flex justify-start mb-4"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-xs font-bold text-white mr-2 flex-shrink-0 shadow-md">AI</div><div class="bg-gray-800 border border-gray-700 text-gray-200 p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] shadow-sm">${text}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
 }
 
 function addUserMessage(text) {
     const msgs = document.getElementById('chatMessages');
     if (!msgs) return;
-    msgs.innerHTML += `<div class="flex justify-end mb-4"><div class="bg-primary-600 text-white p-3 rounded-2xl rounded-tr-none text-sm max-w-[80%] shadow-md">${text}</div></div>`;
+    msgs.innerHTML += `<div class="flex justify-end mb-4"><div class="bg-primary-600 text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[80%] shadow-md">${text}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
 }
 
@@ -322,55 +440,43 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return;
         addUserMessage(text);
         input.value = "";
-        
+
         setTimeout(() => {
             const lower = text.toLowerCase();
             const user = window.AuthService.getUser();
-            let res = "Sajnos ezt a kérdést még nem tudom feldolgozni. Kérdezz az egyenlegedről, jelvényekről vagy zsebekről!";
-            
-            if (lower.includes('egyenleg') || lower.includes('pénz')) {
-                res = user ? `A felhőben tárolt aktuális egyenleged: <strong>${formatCurrency(user.balance)}</strong>.` : "Kérlek, lépj be a fiókodba az egyenleged lekéréséhez.";
+            let res = "Sajnos ezt még nem tudom feldolgozni. Kérdezz az egyenlegedről, jelvényekről, zsebekről vagy indíts utalást!";
+
+            if (!user) {
+                res = "Kérlek lépj be az adatok lekéréséhez.";
+            } else if (lower.includes('egyenleg') || lower.includes('pénz') || lower.includes('mennyi')) {
+                res = `A Cloud Firestore-ban tárolt aktuális egyenleged: <strong>${formatCurrency(user.balance)}</strong>.`;
             } else if (lower.includes('zseb') || lower.includes('cél') || lower.includes('megtakarítás')) {
-                res = user && user.vaults ? "Aktív céljaid állása a Realtime felhőben:<br>" + user.vaults.map(v => `• <strong>${v.name}</strong>: ${formatCurrency(v.current)} / ${formatCurrency(v.target)}`).join('<br>') : "Nincsenek aktív zsebeid konfigurálva.";
+                res = "Megtakarítási céljaid helyzete:<br>" + user.vaults.map(v => `• <strong>${v.name}</strong>: ${formatCurrency(v.current)} / ${formatCurrency(v.target)}`).join('<br>');
             } else if (lower.includes('jelvény') || lower.includes('badge') || lower.includes('plecsni')) {
-                res = user ? `A profilodhoz rendelt kitüntetések: <strong>${user.badges.join(', ')}</strong>.` : "A jelvényeid ellenőrzéséhez előbb be kell jelentkezned.";
-            } else if (lower.includes('szia') || lower.includes('hello') || lower.includes('helló')) {
-                res = `Szia ${user ? user.name.split(' ')[0] : 'Látogató'}! Miben segíthetek ma az AuroraPay-en belül?`;
-            } else if (lower.includes('vicc')) {
-                res = "Miért nem utalnak a szellemek bankszámlára? <br> Mert szeretik a készpénzt (kész-lényt)! 👻";
+                res = `A megszerzett plecsnid listája: <strong>${user.badges.join(', ')}</strong>.`;
+            } else if (lower.includes('utal') || lower.includes('fizet') || lower.includes('küld')) {
+                res = `Indíthatunk egy tranzakciót! Kattints az <a href="#" onclick="window.AuthService.simulateTransaction('Utalás')" class="text-primary-400 underline font-bold">ide</a> linkre az utalás panel megnyitásához.`;
+            } else if (lower.includes('szia') || lower.includes('hello')) {
+                res = `Szia ${user.name.split(' ')[0]}! Milyen banki műveletben segítsek ma?`;
             }
             addBotMessage(res);
-        }, 800);
+        }, 700);
     };
 
     document.getElementById('chatSendBtn')?.addEventListener('click', handleSend);
     input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 });
 
-// ÉLŐ ÉRTESÍTÉSEK (Dinamikus szimuláció)
-function showNotification() {
-    if (document.querySelectorAll('.fake-toast').length > 0) return;
-    const messages = [
-        { icon: 'user-plus', text: 'Új felhasználó regisztrált innen: Budapest', color: 'text-blue-400' },
-        { icon: 'dollar-sign', text: 'Kovács Anna 5.000 Ft-ot utalt', color: 'text-green-400' },
-        { icon: 'shield', text: 'Biztonsági hálózati ellenőrzés sikeres', color: 'text-purple-400' }
-    ];
-    const msg = messages[Math.floor(Math.random() * messages.length)];
+// Globális Értesítő UI Toast generátor modul
+function showNotification(text) {
     const toast = document.createElement('div');
-    toast.className = 'fake-toast fixed bottom-4 right-4 bg-gray-800 border border-gray-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-50';
-    toast.innerHTML = `<div class="bg-gray-700/50 p-2 rounded-full ${msg.color}"><i data-feather="${msg.icon}" class="w-4 h-4"></i></div><div><p class="text-xs text-gray-400">Éppen most</p><p class="text-sm font-medium">${msg.text}</p></div>`;
+    toast.className = 'fixed bottom-4 right-4 bg-gray-800 border border-primary-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-[9999]';
+    toast.innerHTML = `<div class="bg-primary-500/20 p-2 rounded-full text-primary-400"><i data-feather="check-circle" class="w-5 h-5"></i></div><div><p class="text-sm font-medium">${text}</p></div>`;
     document.body.appendChild(toast);
-    if(typeof feather !== 'undefined') feather.replace();
+    if (window.feather) feather.replace();
     setTimeout(() => toast.classList.remove('translate-y-20', 'opacity-0'), 100);
-    setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 4000);
+    setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 3000);
 }
-setTimeout(() => { showNotification(); setInterval(() => { if(Math.random() > 0.6) showNotification(); }, 12000); }, 4000);
-
-// Modern kék egérfény (Cursor glow effekt)
-const cursorGlow = document.createElement('div');
-cursorGlow.style.cssText = "width:400px;height:400px;background:radial-gradient(circle, rgba(14,165,233,0.12), transparent 70%);position:fixed;top:0;left:0;pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:transform 0.1s ease-out;mix-blend-mode:screen;";
-document.body.appendChild(cursorGlow);
-document.addEventListener('mousemove', (e) => { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; });
 
 // Preloader eltüntetése
 window.addEventListener('load', () => {
