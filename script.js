@@ -1,12 +1,11 @@
 /* =========================================================================
-   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Végleges, Hiánytalan, Javított Verzió)
+   AuroraPay - KÖZPONTI RENDSZERLOGIKA (Animált Tranzakciós Motorral)
    ========================================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Konfigurációs objektum az éles adatokkal
 const firebaseConfig = {
     apiKey: "AIzaSyDd788LrFh74TDT30tLiztwNw4NHKFtAn0",
     authDomain: "ben0ke-aurorapay.firebaseapp.com",
@@ -21,7 +20,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Valutaformázó segédfüggvény
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('hu-HU', {
         style: 'currency',
@@ -30,7 +28,6 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-// Véletlenszerű IBAN generátor
 function generateIBAN() {
     const bankCode = '117';
     const branch = Math.floor(1000 + Math.random() * 9000);
@@ -38,7 +35,6 @@ function generateIBAN() {
     return `HU42 ${bankCode}7-${branch}-${account}`;
 }
 
-// Véletlenszerű múltbéli előzménygenerátor regisztrációhoz
 function generateInitialHistory(startBalance) {
     const partners = ['Netflix', 'Steam Store', 'Tesco', 'MOL Nyrt.', 'McDonalds', 'Diákmunka Kft', 'BKK Zrt', 'Spotify AB', 'RPLN EV'];
     const categories = ['Szórakozás', 'Gaming', 'Élelmiszer', 'Üzemanyag', 'Étkezés', 'Bevétel', 'Közlekedés', 'Szórakozás', 'Bevétel'];
@@ -70,7 +66,6 @@ function generateInitialHistory(startBalance) {
     return history;
 }
 
-// KÖZPONTI SZOLGÁLTATÁSOK (Auth & Üzleti logika)
 window.AuthService = {
     init: function () {
         onAuthStateChanged(auth, async (user) => {
@@ -130,7 +125,7 @@ window.AuthService = {
             await setDoc(doc(db, "users", user.uid), userData);
             return true;
         } catch (error) {
-            alert("Hiba: " + error.message);
+            alert("Hiba a regisztráció során: " + error.message);
             return false;
         }
     },
@@ -140,15 +135,26 @@ window.AuthService = {
         if (!modal) return;
 
         document.getElementById('modalTxType').value = type;
-        document.getElementById('modalTitle').innerHTML = `<i data-feather="credit-card" class="w-5 h-5"></i> ${type} indítása`;
+        document.getElementById('modalTitle').innerHTML = `<i data-feather="credit-card" class="w-5 h-5"></i> ${type} indítása - Aurora Rendszer`;
+
         document.getElementById('modalTxForm').reset();
+
+        // Alaphelyzetbe állítjuk a gombot is megnyitáskor, ha korábban hiba lett volna rajta
+        const submitBtn = document.getElementById('modalSubmitBtn');
+        const btnContent = document.getElementById('btnContent');
+        if (submitBtn && btnContent) {
+            submitBtn.className = "w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-primary-900/20 flex items-center justify-center gap-2 relative overflow-hidden";
+            btnContent.innerHTML = `<i data-feather="check-circle" class="w-4 h-4"></i> Tranzakció végrehajtása`;
+        }
 
         if (type === 'Feltöltés') {
             document.getElementById('modalAccountContainer').classList.add('hidden');
             document.getElementById('modalEmailContainer').classList.add('hidden');
+            document.getElementById('modalPartner').placeholder = "pl. MOL Nyrt. Feltöltőautomata, OTP";
         } else {
             document.getElementById('modalAccountContainer').classList.remove('hidden');
             document.getElementById('modalEmailContainer').classList.remove('hidden');
+            document.getElementById('modalPartner').placeholder = "pl. Kovács Anna, Tesco, Netflix";
         }
 
         modal.classList.remove('hidden');
@@ -156,16 +162,38 @@ window.AuthService = {
     },
 
     closeTransactionModal: function () {
-        document.getElementById('transactionModal').classList.add('hidden');
+        const modal = document.getElementById('transactionModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
     },
 
+    // --- JAVÍTOTT: KÖRNYEZET- ÉS EGYENLEG-ÉRZÉKENY ANIMÁCIÓS MOTOR ---
     executeModalTransaction: async function (amount, currency, partner, account, email, type) {
         const user = this.getUser();
         if (!user) return;
 
-        let baseAmount = parseInt(amount);
-        if (isNaN(baseAmount) || baseAmount <= 0) return;
+        const submitBtn = document.getElementById('modalSubmitBtn');
+        const btnContent = document.getElementById('btnContent');
+        if (!submitBtn || !btnContent) return;
 
+        let baseAmount = parseInt(amount);
+        if (isNaN(baseAmount) || baseAmount <= 0) {
+            alert("Kérlek adj meg egy érvényes összeget!");
+            return;
+        }
+
+        // 1. FÁZIS: Betöltés indítása (Loading Spinner)
+        submitBtn.disabled = true;
+        btnContent.innerHTML = `
+            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Feldolgozás...</span>
+        `;
+
+        // Deviza számítások
         let rate = 1;
         let currencySymbol = "Ft";
         if (currency === 'EUR') { rate = 400; currencySymbol = "€"; }
@@ -174,14 +202,40 @@ window.AuthService = {
         let hufEquivalent = baseAmount * rate;
         let finalAmountForTable = type === 'Feltöltés' ? hufEquivalent : -hufEquivalent;
 
+        // Kis mesterséges késleltetés a látvány kedvéért (800ms)
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        // FEDEZETELLENŐRZÉS (Sikeres vagy Sikertelen ág kiértékelése)
         if (type !== 'Feltöltés' && user.balance + finalAmountForTable < 0) {
-            alert("Sikertelen tranzakció: Nincs elegendő fedezet!");
+            // 2. FÁZIS / A: SIKERTELEN (Nincs elég pénz) -> Hiba animáció
+            submitBtn.disabled = false;
+            submitBtn.className = "w-full bg-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-red-900/40 flex items-center justify-center gap-2 animate-shake";
+            btnContent.innerHTML = `<i data-feather="alert-triangle" class="w-4 h-4"></i> Nincs elég fedezet!`;
+            if (typeof feather !== 'undefined') feather.replace();
+
+            // 2 másodperc után visszaállítjuk a gombot alapállapotba, hogy újra megpróbálhassa
+            setTimeout(() => {
+                if (!submitBtn.classList.contains('bg-red-600')) return; // Ha közben bezárta volna
+                submitBtn.className = "w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-500 hover:to-secondary-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-primary-900/20 flex items-center justify-center gap-2";
+                btnContent.innerHTML = `<i data-feather="check-circle" class="w-4 h-4"></i> Tranzakció végrehajtása`;
+                if (typeof feather !== 'undefined') feather.replace();
+            }, 2500);
             return;
         }
 
+        // 2. FÁZIS / B: SIKERES -> Pipa és Neon zöld pulzálás animáció
+        submitBtn.className = "w-full bg-green-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 animate-pulse-green";
+        btnContent.innerHTML = `<i data-feather="check" class="w-5 h-5"></i> Sikeres ${type}!`;
+        if (typeof feather !== 'undefined') feather.replace();
+
+        // Adatbázis mentés elindítása a háttérben
         user.balance += finalAmountForTable;
         let fullDescription = partner;
-        if (type !== 'Feltöltés' && account) fullDescription += ` (Számla: ${account})`;
+        if (type !== 'Feltöltés' && account) {
+            fullDescription += ` (IBAN: ${account})`;
+        } else if (type === 'Feltöltés') {
+            fullDescription = `Kártyás feltöltés - ${partner}`;
+        }
 
         user.transactions.unshift({
             date: new Date().toLocaleDateString('hu-HU'),
@@ -203,9 +257,14 @@ window.AuthService = {
         });
 
         localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
-        window.dispatchEvent(new Event('auth-change'));
-        this.closeTransactionModal();
-        showNotification(`Sikeres ${type}: ${amount} ${currencySymbol}`);
+
+        // Hagyunk időt a felhasználónak, hogy lássa a gyönyörű zöld pipa animációt (1200ms)
+        setTimeout(() => {
+            window.dispatchEvent(new Event('auth-change'));
+            this.closeTransactionModal();
+            showNotification(`Sikeres ${type}: ${amount} ${currencySymbol} jóváírva.`);
+            submitBtn.disabled = false;
+        }, 1200);
     },
 
     depositToVault: async function (vaultId) {
@@ -251,13 +310,12 @@ window.AuthService = {
 
         localStorage.setItem('aurorapay_current_user', JSON.stringify(user));
         window.dispatchEvent(new Event('auth-change'));
-        showNotification(`Áthelyezve a zsebbe: ${formatCurrency(amount)}`);
+        showNotification(`Sikeresen átraktál ${formatCurrency(amount)}-t a zsebbe.`);
     }
 };
 
 window.AuthService.init();
 
-// JAVÍTÁS: A HEADER ÉS FOOTER SAJÁT BELSŐ HTML TARTALMÁNAK HELYREÁLLÍTÁSA
 class CustomNavbar extends HTMLElement {
     connectedCallback() {
         this.render();
@@ -316,7 +374,6 @@ class CustomFooter extends HTMLElement {
 }
 if (!customElements.get('custom-footer')) customElements.define('custom-footer', CustomFooter);
 
-// INITIALIZATIONS & INTERFACES
 document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
@@ -427,7 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// CHATBOT LOGIKA ÉS ASSZISZTENS
 window.toggleChat = function () {
     const chat = document.getElementById('chatWindow'); if (!chat) return;
     chat.classList.toggle('hidden');
@@ -470,7 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
     input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
 });
 
-// FINTECH TOAST NOTIFICATION RENDSZER
 function showNotification(text) {
     const toast = document.createElement('div');
     toast.className = 'fixed bottom-4 right-4 bg-gray-800 border border-primary-500 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500 z-[9999]';
@@ -481,7 +536,6 @@ function showNotification(text) {
     setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); setTimeout(() => toast.remove(), 500); }, 3000);
 }
 
-// TAKARÓ RÉTEG (PRELOADER) KEZELŐ
 window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
     if (preloader) {
